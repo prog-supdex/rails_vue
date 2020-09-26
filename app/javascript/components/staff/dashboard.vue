@@ -11,7 +11,7 @@
                 td.id {{ client.id }}
                 td.name {{ client.name }}
                 td.email {{ client.email }}
-                td.phone {{ client.email }}
+                td.phone {{ client.phone }}
 </template>
 
 <script>
