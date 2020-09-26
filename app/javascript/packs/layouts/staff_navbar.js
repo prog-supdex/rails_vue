@@ -1,5 +1,5 @@
 import Vue from 'vue/dist/vue.js';
-import LayoutStaffNavbar from 'layouts/staff/navbar';
+import LayoutStaffNavbar from 'components/staff/layouts/navbar';
 
 console.log(LayoutStaffNavbar)
 
