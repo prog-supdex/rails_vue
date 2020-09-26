@@ -3,7 +3,7 @@
         #logo
             img(:src="logo_staff")
         div(id="links" class="navigation-item" v-if="current_user")
-            span Вошли как {{ current_user.email }}
+            span Вошли как {{ current_user.name }} ({{ current_user.email }})
             a(href='/staffs/sign_out') Выйти
         div(id="links" v-else)
             a(href='/staffs/sign_in') Войти
