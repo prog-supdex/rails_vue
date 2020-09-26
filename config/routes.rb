@@ -8,4 +8,9 @@ Rails.application.routes.draw do
   }
 
   root to: 'welcome#index'
+
+  namespace :staffs do
+    resources :clients, only: %i[index create], defaults: { format: 'json' }
+    get '/clients/new', to: 'clients#new', as: :new_clients
+  end
 end
