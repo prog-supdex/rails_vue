@@ -27,8 +27,6 @@
       }
 
       this.logo_staff = this._logo_staff
-
-      console.log('testing')
     }
   }
 </script>
