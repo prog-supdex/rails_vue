@@ -17,7 +17,7 @@
             div(class="field")
                 label(for="phone_field") Телефон
                 br
-                input(id="phone_field" autocomplete="phone" type="text" name="client[phone]" v-model="phone" v-on:change="existsRecord"  data-name="email")
+                input(id="phone_field" autocomplete="phone" type="text" name="client[phone]" v-model="phone" v-on:change="existsRecord"  data-name="phone")
             div(class="field")
                 label(for="password_field") Пароль
                 br
