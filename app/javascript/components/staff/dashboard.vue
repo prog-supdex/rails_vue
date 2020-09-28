@@ -1,33 +1,36 @@
 <template lang="pug">
-    div.client-list
-        table
-            thead
-                tr
-                    th id
-                    th Имя
-                    th Email
-                    th Телефон
-            tr(v-for="client in clients" :key="client.id")
-                td.id {{ client.id }}
-                td.name {{ client.name }}
-                td.email {{ client.email }}
-                td.phone {{ client.phone }}
+    div
+        client-form
+        div.client-list
+            table
+                thead
+                    tr
+                        th id
+                        th Имя
+                        th Email
+                        th Телефон
+                tr(v-for="client in clients" :key="client.id")
+                    td.id {{ client.id }}
+                    td.name {{ client.name }}
+                    td.email {{ client.email }}
+                    td.phone {{ client.phone }}
 </template>
 
 <script>
-  const axios = require('axios');
+  import clientForm from "./client_form";
+  import axios from "axios";
 
   export default {
+    name: 'client-list',
+    components: {
+      clientForm
+    },
     data: function() {
         return {
           clients: []
         }
     },
     created() {
-      this.$root.$on('client-list-update-component', () => {
-        this.fetchClients()
-      });
-
       this.fetchClients();
     },
     methods: {

@@ -1,39 +1,39 @@
 <h2>Создание клиента</h2>
 <div id="staff-clients">
-  <p v-if="errors.length">
-    <b>Пожалуйста исправьте указанные ошибки:</b>
-    <ul>
-      <li v-for="error in errors">{{ error }}</li>
-    </ul>
-  </p>
+<!--  <p v-if="errors.length">-->
+<!--    <b>Пожалуйста исправьте указанные ошибки:</b>-->
+<!--    <ul>-->
+<!--      <li v-for="error in errors">{{ error }}</li>-->
+<!--    </ul>-->
+<!--  </p>-->
 
-  <%= form_with(model: @client, url: staffs_clients_path, local: true, html: {'v-on:submit.prevent' => 'checkForm'}) do |f| %>
-    <div class="field">
-      <%= f.label :name, for: :name_field %><br />
-      <%= f.text_field :name, id: :name_field, autofocus: true, autocomplete: :name, 'v-model': :name %>
-    </div>
+  <%#= form_with(model: @client, url: staffs_clients_path, local: true, html: {'v-on:submit.prevent' => 'checkForm'}) do |f| %>
+<!--    <div class="field">-->
+<!--      <%#= f.label :name, for: :name_field %><br />-->
+      <%#= f.text_field :name, id: :name_field, autofocus: true, autocomplete: :name, 'v-model': :name %>
+<!--    </div>-->
 
-    <div class="field">
-      <%= f.label :email, for: :email_field %><br />
-      <%= f.email_field :email, id: :email_field, autofocus: true, autocomplete: :email, 'v-model': :email %>
-    </div>
+<!--    <div class="field">-->
+<!--      <%#= f.label :email, for: :email_field %><br />-->
+      <%#= f.email_field :email, id: :email_field, autofocus: true, autocomplete: :email, 'v-model': :email %>
+<!--    </div>-->
 
-    <div class="field">
-      <%= f.label :phone, for: :phone_field %><br />
-      <%= f.text_field :phone, id: :phone_field, autocomplete: :phone, 'v-model': :phone %>
-    </div>
+<!--    <div class="field">-->
+<!--      <%#= f.label :phone, for: :phone_field %><br />-->
+      <%#= f.text_field :phone, id: :phone_field, autocomplete: :phone, 'v-model': :phone %>
+<!--    </div>-->
 
-    <div class="field">
-      <%= f.label :password, for: :password_field %><br />
-      <%= f.password_field :password, id: :password_field, autocomplete: 'current-password', 'v-model': :password %>
-    </div>
+<!--    <div class="field">-->
+<!--      <%#= f.label :password, for: :password_field %><br />-->
+      <%#= f.password_field :password, id: :password_field, autocomplete: 'current-password', 'v-model': :password %>
+<!--    </div>-->
 
-    <div class="actions">
-      <%= f.submit 'Создать' %>
-    </div>
-  <% end %>
+<!--    <div class="actions">-->
+      <%#= f.submit 'Создать' %>
+<!--    </div>-->
+  <%# end %>
 
-  <client-list-component/>
+  <client-list-component></client-list-component>
 </div>
 
 <%= javascript_pack_tag 'staffs/dashboard' %>
