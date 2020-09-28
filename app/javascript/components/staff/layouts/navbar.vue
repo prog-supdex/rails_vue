@@ -1,7 +1,7 @@
 <template lang="pug">
     div.navigation-bar
         #logo
-            img(:src="logo_staff")
+            img(src="/images/staff.svg")
         div(id="links" class="navigation-item" v-if="current_user")
             span Вошли как {{ current_user.name }} ({{ current_user.email }})
             a(href='/staffs/clients/new') Создать клиента
@@ -11,23 +11,24 @@
 </template>
 
 <script>
+  const axios = require('axios');
+
   export default {
     data: function() {
       return {
-        current_user: null,
-        logo_staff: null
+        current_user: null
       }
     },
-    props: {
-      _current_user: {},
-      _logo_staff: ''
+    created: function() {
+      this.fetchCurrentStaffUser();
     },
-    mounted: function() {
-      if (this._current_user !== null) {
-        this.current_user = { ...this._current_user };
+    methods: {
+      fetchCurrentStaffUser: function () {
+        axios.get('/staffs/users/current_user')
+          .then(({data}) => {
+            this.current_user = data
+          })
       }
-
-      this.logo_staff = this._logo_staff
     }
   }
 </script>
