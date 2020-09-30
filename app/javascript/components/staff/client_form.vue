@@ -13,11 +13,11 @@
             div(class="field")
                 label(for="email_field") Email
                 br
-                input(id="email_field" type="email" name="client[email]" v-model="email")
+                input(id="email_field" type="email" name="client[email]" v-model="email" v-on:change="existsRecord" data-name="email")
             div(class="field")
                 label(for="phone_field") Телефон
                 br
-                input(id="phone_field" autocomplete="phone" type="text" name="client[phone]" v-model="phone")
+                input(id="phone_field" autocomplete="phone" type="text" name="client[phone]" v-model="phone" v-on:change="existsRecord"  data-name="phone")
             div(class="field")
                 label(for="password_field") Пароль
                 br
@@ -85,6 +85,29 @@
           .catch(error => {
             console.log(error)
           })
+      },
+      existsClientByField: function(field, value) {
+        axios.post('/staffs/clients/exists', {
+          field: field,
+          value: value
+        }).then(({data}) => {
+          if (data) {
+            if (field == 'phone') {
+              this.errors.push('Такой телефон уже присутствует в базе');
+            } else {
+              this.errors.push('Такой email уже присутствует в базе');
+            }
+          }
+        })
+      },
+      existsRecord: function(e) {
+        this.existsClientByField(e.currentTarget.dataset.name, e.currentTarget.value)
+      },
+      clearForm: function() {
+        this.email = ''
+        this.phone = ''
+        this.errors = []
+        this.name = ''
       }
     }
   }

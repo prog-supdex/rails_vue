@@ -20,6 +20,14 @@ class Staffs::ClientsController < ApplicationController
     end
   end
 
+  def check_exists_client_by_field
+    respond_to do |format|
+      format.json do
+        render json: ExistsClientByField.call(field: params[:field], value: params[:value])
+      end
+    end
+  end
+
   private
 
   def permitted_params
