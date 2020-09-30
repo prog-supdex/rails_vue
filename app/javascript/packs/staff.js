@@ -1,11 +1,17 @@
-import Vue from 'vue'
-import App from '../app.vue'
+import Vue from 'vue/dist/vue.esm'
 
 document.addEventListener('DOMContentLoaded', () => {
-  const app = new Vue({
-    render: h => h(App)
-  }).$mount()
-  document.body.appendChild(app.$el)
+  Vue.component('my-component', {
+    template: '<p>Hello {{ message }}</p>',
+    data() {
+      return {
+        message: 'Vue'
+      }
+    }
+  })
 
-  console.log('this is staff')
+  new Vue({
+    el: '#app'
+  }).$mount()
 })
+

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>RailsVue!!</title>
+    <title>RailsVue!</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -9,7 +9,13 @@
     <%= javascript_pack_tag 'hello_vue' %>
   </head>
 
+  <header>
+    <%= render 'layouts/navbar_staffs'%>
+  </header>
+
   <body>
-    <%= yield %>
+    <div id="app">
+      <%= yield %>
+    </div>
   </body>
 </html>
