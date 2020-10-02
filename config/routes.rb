@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   }
 
   root to: 'welcome#index'
+  get '/users/current_user', to: 'users#current_user', as: :current_user, defaults: { format: 'json' }
 
   namespace :staffs do
     resources :clients, only: %i[index create], defaults: { format: 'json' }
