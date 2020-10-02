@@ -1,17 +1,12 @@
-import Vue from 'vue/dist/vue.esm'
+import Vue from 'vue'
+import '../quasar/index'
+import Layout from "../components/layout";
+
 
 document.addEventListener('DOMContentLoaded', () => {
-  Vue.component('my-component', {
-    template: '<p>Hello {{ message }}</p>',
-    data() {
-      return {
-        message: 'Vue'
-      }
-    }
-  })
-
   new Vue({
-    el: '#app'
+    el: '#app',
+    render: h => h(Layout)
   }).$mount()
 })
 
