@@ -9,6 +9,17 @@ class Staffs::ClientsController < ApplicationController
     @client = Client.new(permitted_params)
     @client.save
 
+    render json: {
+      success: @client.errors.messages.blank?,
+      object: @client,
+      errors: @client.errors.messages
+    }
+  end
+
+  def create
+    @client = Client.new(permitted_params)
+    @client.save
+
     render json: @client
   end
 
