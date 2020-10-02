@@ -2,22 +2,33 @@ class Staffs::ClientsController < ApplicationController
   def index
     @clients = Client.select(:id, :name, :email)
 
-    respond_to do |format|
-      format.json { render json: @clients }
-    end
-  end
-
-  def new
-    @client = Client.new
+    render json: @clients
   end
 
   def create
     @client = Client.new(permitted_params)
     @client.save
 
-    respond_to do |format|
-      format.json { render json: @client }
-    end
+    render json: @client
+  end
+
+  def edit
+    @client = Client.find(params[:id])
+
+    render json: @client
+  end
+
+  def update
+    @client = Client.find(params[:id])
+    @client.assign_attributes(permitted_params)
+    @client.organization_ids << params[:organization_id]
+    @client.save
+
+    render json: {
+      success: @client.errors.messages.blank?,
+      object: @client,
+      errors: @client.errors.messages
+    }
   end
 
   def check_exists_client_by_field
@@ -31,6 +42,6 @@ class Staffs::ClientsController < ApplicationController
   private
 
   def permitted_params
-    params.require('client').permit(:name, :email, :password, :phone)
+    params.require(:client).permit(:name, :email, :password, :phone)
   end
 end

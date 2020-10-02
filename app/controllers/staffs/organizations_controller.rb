@@ -23,7 +23,7 @@ class Staffs::OrganizationsController < ApplicationController
   def update
     @organization = Organization.find(params[:id])
     @organization.assign_attributes(permitted_params)
-    @organization.client_ids = params[:clients]
+    @organization.client_ids << params[:client_id]
     @organization.save
 
     render json: {
