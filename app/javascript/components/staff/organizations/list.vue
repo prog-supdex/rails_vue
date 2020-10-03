@@ -19,10 +19,11 @@
 </template>
 
 <script>
-  import axios from "axios";
+  import {fetchOrganizations} from "../../mixins/fetchOrganizations";
 
   export default {
     name: 'organization-list',
+    mixins: [fetchOrganizations],
     data: function() {
       return {
         columns: [
@@ -39,19 +40,7 @@
         organizations: []
       }
     },
-    created() {
-      this.fetchOrganizations();
-    },
     methods: {
-      fetchOrganizations: function () {
-        axios.get('/staffs/organizations')
-          .then(({data}) => {
-            this.organizations = data
-          })
-          .catch(error => {
-            console.log(error)
-          })
-      },
       openOrgForm: function(orgId) {
         this.$emit('open-org-form-event', orgId);
       },

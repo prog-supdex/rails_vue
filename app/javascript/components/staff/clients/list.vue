@@ -20,10 +20,11 @@
 </template>
 
 <script>
-  import axios from "axios";
+  import { fetchClients } from "../../mixins/fetchClients";
 
   export default {
     name: 'client-list',
+    mixins: [fetchClients],
     data: function() {
       return {
         clients: [],
@@ -40,19 +41,7 @@
         ]
       }
     },
-    created() {
-      this.fetchClients();
-    },
     methods: {
-      fetchClients: function () {
-        axios.get('/staffs/clients')
-          .then(({data}) => {
-            this.clients = data
-          })
-          .catch(error => {
-            console.log(error)
-          })
-      },
       deleteRecord: function(clientObject) {
         this.$emit('delete-client-event', clientObject);
       },

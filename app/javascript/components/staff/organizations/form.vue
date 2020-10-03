@@ -73,9 +73,11 @@
 
 <script>
   import axios from "axios";
+  import {fetchClients} from "../../mixins/fetchClients";
 
   export default {
     name: 'organization-form',
+    mixins: [fetchClients],
     data() {
       return {
         organization: {
@@ -91,19 +93,7 @@
         options: [ { id: 'individual', name: 'ИП' }, { id: 'juridical', name: 'Юр. Лицо' } ]
       }
     },
-    created() {
-        this.fetchClients();
-    },
     methods: {
-      fetchClients: function () {
-        axios.get('/staffs/clients')
-          .then(({data}) => {
-            this.clients = data
-          })
-          .catch(error => {
-            console.log(error)
-          })
-      },
       checkForm: function (e) {
         this.$refs.name.validate()
         this.$refs.inn.validate()

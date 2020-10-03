@@ -87,9 +87,11 @@
 
 <script>
   import axios from "axios";
+  import {fetchOrganizations} from "../../mixins/fetchOrganizations";
 
   export default {
     name: 'client-form',
+    mixins: [fetchOrganizations],
     data() {
       return {
         client: {
@@ -104,19 +106,7 @@
         showDialog: false,
       }
     },
-    created() {
-      this.fetchOrganizations();
-    },
     methods: {
-      fetchOrganizations: function () {
-        axios.get('/staffs/organizations')
-          .then(({data}) => {
-            this.organizations = data
-          })
-          .catch(error => {
-            console.log(error)
-          })
-      },
       checkForm() {
         this.$refs.email.validate();
         this.$refs.name.validate();
