@@ -12,13 +12,13 @@ Rails.application.routes.draw do
 
   namespace :staffs do
     resources :clients, defaults: { format: :json }
+    resources :organizations, defaults: { format: :json }
     get '/clients/new', to: 'clients#new', as: :new_clients
     get '/users/current_user', to: 'users#current_user', as: :current_staff_user, defaults: { format: :json }
     post '/clients/exists', to: 'clients#check_exists_client_by_field', as: :client_exists, defaults: { format: :json }
   end
 
   namespace :clients do
-    get '/organizations', to: 'organizations#index', as: :organizations
-    resources :organizations, defaults: { format: :json }
+    resources :organizations, only: :index, defaults: { format: :json }
   end
 end
