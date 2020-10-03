@@ -1,7 +1,5 @@
 <template lang="pug">
     div
-        q-btn(label="Создать клиента" @click="showDialog = !showDialog")
-
         q-dialog(v-model="showDialog" title="Создание клиента" persistent)
             q-card(style="width: 750px; max-width: 85vw;")
                 q-form(class="justify-center q-pa-lg" @submit="checkForm" @reset.prevent.stop="onReset")
