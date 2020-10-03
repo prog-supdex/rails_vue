@@ -1,10 +1,14 @@
 class Staffs::ClientsController < ApplicationController
   def index
-    @clients = Client.select(:id, :name, :email)
+    @clients = Client.select(:id, :name, :email, :phone)
 
     render json: @clients
   end
 
+  def new
+    @client = Client.new
+  end
+
   def create
     @client = Client.new(permitted_params)
     @client.save
@@ -12,33 +16,26 @@ class Staffs::ClientsController < ApplicationController
     render json: {
       success: @client.errors.messages.blank?,
       object: @client,
-      errors: @client.errors.messages
+      errors: @client.errors.full_messages.join(', ')
     }
   end
 
-  def create
-    @client = Client.new(permitted_params)
-    @client.save
+  def show
+    @client = Client.with_organization_ids.find(params[:id])
 
-    render json: @client
-  end
-
-  def edit
-    @client = Client.find(params[:id])
-
-    render json: @client
+    render json: @client.as_json(only: %i[id name email phone organization_list_id])
   end
 
   def update
     @client = Client.find(params[:id])
-    @client.assign_attributes(permitted_params)
-    @client.organization_ids << params[:organization_id]
+    @client.assign_attributes(permitted_params.except('password'))
+    @client.organization_ids << params[:client][:organization_id]
     @client.save
 
     render json: {
       success: @client.errors.messages.blank?,
       object: @client,
-      errors: @client.errors.messages
+      errors: @client.errors.full_messages.join(', ')
     }
   end
 
@@ -48,6 +45,13 @@ class Staffs::ClientsController < ApplicationController
         render json: ExistsClientByField.call(field: params[:field], value: params[:value])
       end
     end
+  end
+
+  def destroy
+    @client = Client.find(params[:id])
+    @client.destroy
+
+    render json: @client
   end
 
   private
