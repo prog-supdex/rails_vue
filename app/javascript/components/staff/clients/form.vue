@@ -1,5 +1,5 @@
 <template lang="pug">
-    div(class="q-pa-md")
+    div
         q-btn(label="Создать клиента" @click="showCreateClientDialog = !showCreateClientDialog")
 
         q-dialog(v-model="showCreateClientDialog" title="Создание клиента" persistent)

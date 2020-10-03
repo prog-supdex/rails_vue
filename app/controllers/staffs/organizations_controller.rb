@@ -1,6 +1,6 @@
 class Staffs::OrganizationsController < ApplicationController
   def index
-    render json: current_staff.organizations
+    render json: Organization.select(:id, :name, :ogrn, :inn, :org_type)
   end
 
   def create
@@ -14,16 +14,16 @@ class Staffs::OrganizationsController < ApplicationController
     }
   end
 
-  def edit
-    @organization = Organization.find(params[:id])
+  def show
+    @organization = Organization.with_client_ids.find(params[:id])
 
-    render json: @organization
+    render json: @organization.as_json(only: %i[id name inn ogrn org_type client_list_id])
   end
 
   def update
     @organization = Organization.find(params[:id])
     @organization.assign_attributes(permitted_params)
-    @organization.client_ids << params[:client_id]
+    @organization.client_ids = params[:organization][:client_list_id]
     @organization.save
 
     render json: {
@@ -31,6 +31,13 @@ class Staffs::OrganizationsController < ApplicationController
       object: @organization,
       errors: @organization.errors.messages
     }
+  end
+
+  def destroy
+    @organization = Organization.find(params[:id])
+    @organization.destroy
+
+    render json: @organization
   end
 
   private

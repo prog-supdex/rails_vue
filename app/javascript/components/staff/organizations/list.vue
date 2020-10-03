@@ -1,0 +1,66 @@
+<template lang="pug">
+    div(class="q-pa-md")
+        q-table(
+            title="Организации"
+            :data="organizations"
+            :columns="columns"
+            row-key="name"
+            dark
+            color="amber"
+            binary-state-sort
+        )
+            template(v-slot:top)
+                q-btn(dense color="secondary" label="Создать организацию" @click="openOrgForm" no-caps)
+
+            template(v-slot:body-cell-actions="props")
+                q-td(:props="props")
+                    q-btn(color="blue" label="Редактировать" @click="openOrgForm(props.row.id)" size=sm no-caps)
+                    q-btn(color="red" label="Удалить"  @click="deleteOrgRecord(props.row)" size=sm no-caps)
+</template>
+
+<script>
+  import axios from "axios";
+
+  export default {
+    name: 'organization-list',
+    data: function() {
+      return {
+        columns: [
+          { name: 'name', label: 'Название', align: 'left', field: 'name' },
+          { name: 'org_type', align: 'center', label: 'Тип', field: 'org_type' },
+          { name: 'inn', align: 'center', label: 'ИНН', field: 'inn' },
+          { name: 'ogrn', align: 'center', label: 'ОГРН', field: 'ogrn' },
+          {
+            name: 'actions',
+            label: 'Actions',
+            field: 'actions'
+          }
+        ],
+        organizations: []
+      }
+    },
+    created() {
+      this.fetchOrganizations();
+    },
+    methods: {
+      fetchOrganizations: function () {
+        axios.get('/staffs/organizations')
+          .then(({data}) => {
+            this.organizations = data
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      },
+      openOrgForm: function(orgId) {
+        this.$emit('open-org-form-event', orgId);
+      },
+      deleteOrgRecord: function(orgObject) {
+        this.$emit('delete-org-event', orgObject);
+      }
+    }
+  }
+</script>
+
+<style scoped lang="scss">
+</style>
