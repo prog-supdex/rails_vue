@@ -14,10 +14,4 @@ class Organization < ApplicationRecord
       .select("#{table_name}.*, array_agg(organization_clients.client_id) AS client_list_id")
       .group("#{table_name}.id")
   end
-
-  def as_json(options = {})
-    options[:client_list_id] = [:full_name]
-
-    super
-  end
 end
