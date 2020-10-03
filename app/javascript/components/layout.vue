@@ -21,7 +21,9 @@
         </q-drawer>
 
         <q-page-container>
-            <slot name="content" />
+            <slot name="content">
+                Авторизуйтесь
+            </slot>
         </q-page-container>
 
         <q-footer elevated class="bg-grey-8 text-white">
@@ -40,16 +42,10 @@
 
 <script>
   import NavbarLayout from './navbar-layout'
-  import { Quasar, QLayout, QToolbar, QHeader, QFooter } from 'quasar/dist/quasar.common'
 
   export default {
     name: 'layout',
     components: {
-      Quasar,
-      QHeader,
-      QFooter,
-      QLayout,
-      QToolbar,
       'navbar-layout': NavbarLayout
     },
     data: function() {
