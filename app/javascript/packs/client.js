@@ -1,11 +1,10 @@
 import Vue from 'vue'
-import App from '../app.vue'
+import '../quasar/index'
+import Dashboard from "../components/client/dashboard";
 
 document.addEventListener('DOMContentLoaded', () => {
-  const app = new Vue({
-    render: h => h(App)
+  new Vue({
+    el: '#app',
+    render: h => h(Dashboard)
   }).$mount()
-  document.body.appendChild(app.$el)
-
-  console.log('this is client')
 })
