@@ -7,7 +7,11 @@
             row-key="name"
             dark
             color="amber"
+            :loading="loading"
         )
+            template(v-slot:loading)
+                q-inner-loading(showing)
+                    q-spinner-cube(color="orange" size="5.5em")
 </template>
 
 <script>
@@ -17,6 +21,7 @@
     name: 'organization-client-list',
     data: function() {
       return {
+        loading: true,
         organizations: [],
         content: 'client-list',
         columns: [
@@ -34,6 +39,7 @@
       fetchOrganizations: function () {
         axios.get('/clients/organizations')
           .then(({data}) => {
+            this.loading = false
             this.organizations = data
           })
           .catch(error => {

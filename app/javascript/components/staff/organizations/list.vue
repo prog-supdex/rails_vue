@@ -6,6 +6,7 @@
             :columns="columns"
             row-key="name"
             dark
+            :loading="loading"
             color="amber"
             binary-state-sort
         )
@@ -16,6 +17,9 @@
                 q-td(:props="props")
                     q-btn(color="blue" label="Редактировать" @click="openOrgForm(props.row.id)" size=sm no-caps)
                     q-btn(color="red" label="Удалить"  @click="deleteOrgRecord(props.row)" size=sm no-caps)
+            template(v-slot:loading)
+                q-inner-loading(showing)
+                    q-spinner-cube(color="orange" size="5.5em")
 </template>
 
 <script>

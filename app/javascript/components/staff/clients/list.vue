@@ -9,6 +9,7 @@
             color="amber",
             :loading="loading"
             binary-state-sort
+            class="relative-position"
         )
             template(v-slot:top)
                 q-btn(dense color="secondary" label="Создать клиента" @click="openClientForm(null)" no-caps)
@@ -17,6 +18,9 @@
                 q-td(:props="props")
                     q-btn(color="blue" label="Редактировать" @click="openClientForm(props.row.id)" size=sm no-caps)
                     q-btn(color="red" label="Удалить"  @click="deleteRecord(props.row)" size=sm no-caps)
+            template(v-slot:loading)
+                q-inner-loading(showing)
+                    q-spinner-cube(color="orange" size="5.5em")
 </template>
 
 <script>
@@ -28,6 +32,7 @@
     data: function() {
       return {
         clients: [],
+        loading: true,
         content: 'client-list',
         columns: [
           { required: true, label: 'Имя', align: 'left', field: 'name', sortable: true },
