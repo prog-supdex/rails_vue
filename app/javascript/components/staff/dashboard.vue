@@ -2,10 +2,10 @@
     layout
         template(v-slot:content)
             div(class="q-pa-md")
-                client-form(v-on:reload-client-list-event="fetchClients")
+                client-form(ref="clientForm" v-on:reload-client-list-event="fetchClients")
                 organization-form(ref="orgForm" v-on:reload-org-list-event="fetchOrganizations")
             div
-                client-list(ref="clientList")
+                client-list(ref="clientList" v-on:open-client-form-event="openClientForm" v-on:delete-client-event="deleteClientRecord")
                 organization-list(ref="orgList" v-on:open-org-form-event="openOrgForm" v-on:delete-org-event="deleteOrgRecord")
 </template>
 
@@ -36,9 +36,13 @@
         this.$refs.orgForm.openForm(orgId);
       },
       deleteOrgRecord: function(orgObject) {
-        console.log('callled!!!!')
-        console.log(orgObject)
         this.$refs.orgForm.deleteRecord(orgObject);
+      },
+      openClientForm: function(clientId) {
+        this.$refs.clientForm.openForm(clientId);
+      },
+      deleteClientRecord: function(clientObject) {
+        this.$refs.clientForm.deleteRecord(clientObject);
       }
     }
   }

@@ -8,7 +8,15 @@
             dark
             color="amber",
             :loading="loading"
+            binary-state-sort
         )
+            template(v-slot:top)
+                q-btn(dense color="secondary" label="Создать клиента" @click="openClientForm(null)" no-caps)
+
+            template(v-slot:body-cell-actions="props")
+                q-td(:props="props")
+                    q-btn(color="blue" label="Редактировать" @click="openClientForm(props.row.id)" size=sm no-caps)
+                    q-btn(color="red" label="Удалить"  @click="deleteRecord(props.row)" size=sm no-caps)
 </template>
 
 <script>
@@ -23,7 +31,12 @@
         columns: [
           { required: true, label: 'Имя', align: 'left', field: 'name', sortable: true },
           { align: 'center', label: 'Email', field: 'email', sortable: true },
-          { label: 'Телефон', field: 'phone', sortable: true, align: 'center' }
+          { label: 'Телефон', field: 'phone', sortable: true, align: 'center' },
+          {
+            name: 'actions',
+            label: 'Actions',
+            field: 'actions'
+          }
         ]
       }
     },
@@ -40,15 +53,12 @@
             console.log(error)
           })
       },
-      destroyRecord: function(id) {
-        axios.delete('/staffs/clients', { id: id })
-          .then(({data}) => {
-            this.fetchClients();
-          })
-          .catch(error => {
-            console.log(error)
-          })
-      }
+      deleteRecord: function(clientObject) {
+        this.$emit('delete-client-event', clientObject);
+      },
+      openClientForm: function(clientId) {
+        this.$emit('open-client-form-event', clientId);
+      },
     }
   }
 </script>

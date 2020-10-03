@@ -10,7 +10,7 @@
             binary-state-sort
         )
             template(v-slot:top)
-                q-btn(dense color="secondary" label="Создать организацию" @click="openOrgForm" no-caps)
+                q-btn(dense color="secondary" label="Создать организацию" @click="openOrgForm(null)" no-caps)
 
             template(v-slot:body-cell-actions="props")
                 q-td(:props="props")

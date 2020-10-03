@@ -1,13 +1,13 @@
 <template lang="pug">
     div
-        q-btn(label="Создать клиента" @click="showCreateClientDialog = !showCreateClientDialog")
+        q-btn(label="Создать клиента" @click="showDialog = !showDialog")
 
-        q-dialog(v-model="showCreateClientDialog" title="Создание клиента" persistent)
+        q-dialog(v-model="showDialog" title="Создание клиента" persistent)
             q-card(style="width: 750px; max-width: 85vw;")
-                q-form(action="https://some-url.com" method="post" class="justify-center q-pa-lg" @submit="checkForm" @reset.prevent.stop="onReset")
+                q-form(class="justify-center q-pa-lg" @submit="checkForm" @reset.prevent.stop="onReset")
                     q-input(
                         ref="name"
-                        v-model="name"
+                        v-model="client.name"
                         label="Имя"
                         filled
                         placeholder="Имя клиента"
@@ -20,7 +20,7 @@
                     br
                     q-input(
                         ref="email"
-                        v-model="email"
+                        v-model="client.email"
                         label="Email"
                         filled
                         placeholder="Email клиента"
@@ -32,9 +32,24 @@
                         ]"
                     )
                     br
+                    q-select(
+                        v-if="clientId"
+                        filled
+                        v-model="client.organization_list_id"
+                        :options="organizations"
+                        map-options
+                        stack-label
+                        use-input
+                        use-chips
+                        emit-value
+                        option-value="id"
+                        option-label="name"
+                        label="Организации"
+                    )
+                    br
                     q-input(
                         ref="phone"
-                        v-model="phone"
+                        v-model="client.phone"
                         label="Телефон"
                         filled
                         mask="# (###) ### - ## - ##"
@@ -49,8 +64,9 @@
                     )
                     br
                     q-input(
+                        v-if="clientId == ''"
                         ref="password"
-                        v-model="password"
+                        v-model="client.password"
                         label="Пароль"
                         placeholder="Пароль клиента"
                         filled
@@ -62,8 +78,10 @@
                     )
                     br
                     div
-                        q-btn(label="Создать" type="submit" color="primary")
-                        q-btn(label="Сбросить" type="reset" color="primary" flat class="q-ml-sm")
+                        q-btn(:label="clientId ? 'Обновить' : 'Создать'" type="submit" color="primary")
+                        q-btn(v-if="clientId == ''" label="Сбросить" type="reset" color="primary" flat class="q-ml-sm")
+                        q-btn(v-else label="Удалить" @click="deleteRecord(client)" color="primary" flat class="q-ml-sm")
+                        q-btn(v-close-popup label="Закрыть" color="secondary")
 </template>
 
 
@@ -74,21 +92,44 @@
     name: 'client-form',
     data() {
       return {
-        showCreateClientDialog: false,
-        email: '',
-        password: '',
-        name: '',
-        phone: '',
+        client: {
+          email: '',
+          password: '',
+          name: '',
+          phone: '',
+          organization_list_id: []
+        },
+        clientId: '',
+        organizations: [],
+        showDialog: false,
       }
     },
+    created() {
+      this.fetchOrganizations();
+    },
     methods: {
-      checkForm: function (e) {
-        this.$refs.email.validate()
-        this.$refs.password.validate()
-        this.$refs.name.validate()
-        this.$refs.phone.validate()
+      fetchOrganizations: function () {
+        axios.get('/staffs/organizations')
+          .then(({data}) => {
+            this.organizations = data
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      },
+      checkForm() {
+        this.$refs.email.validate();
+        this.$refs.name.validate();
+        this.$refs.phone.validate();
 
-        if (this.$refs.email.hasError || this.$refs.password.hasError || this.$refs.phone.hasError || this.$refs.name.hasError) {
+        var passwordError = null
+
+        if (!this.clientId) {
+          passwordError =this.$refs.password.hasError
+          this.$refs.password.validate();
+        }
+
+        if (this.$refs.email.hasError || passwordError || this.$refs.phone.hasError || this.$refs.name.hasError) {
           this.formHasError = true
         } else {
           this.onSubmit();
@@ -96,19 +137,30 @@
       },
       emailCheck: function(val) {
         const emailCheck = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-
+        console.log(val)
+        console.log(emailCheck.test(val))
         return emailCheck.test(val) || 'Неверный формат'
       },
       phoneCheck: function(val) {
-        return (/^\d+$/.test(this.phone)) || 'Неверный формат'
+        return !(/^\d+$/.test(this.phone)) || 'Неверный формат'
       },
-      onSubmit: function () {
-        axios.post('/staffs/clients', {
-          client: {
-            phone: this.phone,
-            email: this.email,
-            password: this.password,
-            name: this.name
+      editForm: function(id) {
+        axios.get('/staffs/clients/' + id)
+          .then(({data}) => {
+            this.client = Object.assign({}, data);
+            this.clientId = id
+            this.showDialog = true
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      },
+      onSubmit() {
+        axios({
+          method: this.clientId ? 'patch' : 'post',
+          url: '/staffs/clients/' + this.clientId,
+          data: {
+            client: this.client
           }
         })
           .then(({data}) => {
@@ -116,11 +168,11 @@
               this.$q.notify({
                 icon: 'done',
                 color: 'positive',
-                message: "Пользователь " + data.object.name + " был создан!"
+                message: "Клиент " + data.object.name + " был создан!"
               });
 
               this.onReset();
-              this.showCreateClientDialog = false;
+              this.showDialog = false;
               this.$emit('reload-client-list-event')
             } else {
               this.$q.notify({
@@ -129,27 +181,38 @@
                 message: data.errors
               })
             }
-            //this.$parent.fetchClients();
           })
           .catch(error => {
             console.log(error)
           })
       },
       onReset () {
-        this.name = ''
-        this.email = ''
-        this.password = ''
-        this.phone = ''
+        this.name = '';
+        this.email = '';
+        this.password = '';
+        this.phone = '';
 
-        this.$refs.name.resetValidation()
-        this.$refs.email.resetValidation()
-        this.$refs.password.resetValidation()
-        this.$refs.phone.resetValidation()
+        this.$refs.name.resetValidation();
+        this.$refs.email.resetValidation();
+
+        if (!this.clientId) {
+          this.$refs.password.resetValidation();
+        }
+
+        this.$refs.phone.resetValidation();
       },
       existsClientByPhone: function(val) {
+        if (this.clientId) {
+          return true;
+        }
+
         return this.existsClientByField('phone', val);
       },
       existsClientByEmail: function(val) {
+        if (this.clientId) {
+          return true;
+        }
+
         return this.existsClientByField('email', val);
       },
       existsClientByField: function(field, value) {
@@ -166,14 +229,29 @@
           })
         })
       },
-      existsRecord: function(e) {
-        this.existsClientByField(e.currentTarget.dataset.name, e.currentTarget.value)
+      deleteRecord: function(clientObject) {
+        if (confirm(`Вы уверены, что хотите удалить клиента ${clientObject.name} ?`)) {
+          axios.delete('/staffs/clients/' + clientObject.id)
+            .then(({data}) => {
+              this.$q.notify({
+                icon: 'done',
+                color: 'positive',
+                message: `Клиент ${data.name} был удален!`
+              });
+              this.showDialog = false
+              this.$emit('reload-client-list-event');
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        }
       },
-      clearForm: function() {
-        this.email = ''
-        this.phone = ''
-        this.errors = []
-        this.name = ''
+      openForm: function(clientId) {
+        if (!clientId) {
+          this.showDialog = true
+        } else {
+          this.editForm(clientId)
+        }
       }
     }
   }

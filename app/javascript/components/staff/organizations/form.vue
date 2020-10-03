@@ -18,12 +18,17 @@
                     q-select(
                         ref="org_type"
                         filled
+                        emit-value
+                        map-options
+                        option-value="id"
+                        option-label="name"
                         v-model="organization.org_type"
                         :options="options"
                         label="Тип организации"
                         :rules="[val => !!val || 'Обязательное поле']"
                     )
                     q-select(
+                        v-if="orgId"
                         filled
                         v-model="organization.client_list_id"
                         :options="clients"
@@ -32,7 +37,6 @@
                         option-value="id"
                         option-label="name"
                         multiple
-                        counter
                         label="Клиенты организации"
                     )
                     q-input(
@@ -84,7 +88,7 @@
         clients: [],
         orgId: '',
         showDialog: false,
-        options: [ 'individual', 'juridical' ]
+        options: [ { id: 'individual', name: 'ИП' }, { id: 'juridical', name: 'Юр. Лицо' } ]
       }
     },
     created() {
