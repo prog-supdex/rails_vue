@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>RailsVue!</title>
+    <title>Приложение</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag 'application', media: 'all' %>
-    <%= javascript_pack_tag 'hello_vue' %>
   </head>
-
-  <header>
-    <%= render 'layouts/navbar_staffs'%>
-  </header>
 
   <body>
     <div id="app">
       <%= yield %>
     </div>
   </body>
+
+  <% if current_staff.present? %>
+    <%= javascript_pack_tag 'staff' %>
+  <% elsif current_client.present? %>
+    <%= javascript_pack_tag 'client' %>
+  <% end %>
 </html>
