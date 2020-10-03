@@ -7,18 +7,12 @@
                     <q-avatar>
                         <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
                     </q-avatar>
-                    Title
+                    Приложение
                 </q-toolbar-title>
-
-                <q-btn dense flat round icon="menu" @click="right = !right" />
             </q-toolbar>
 
             <navbar-layout></navbar-layout>
         </q-header>
-
-        <q-drawer show-if-above v-model="right" side="right" bordered>
-            <!-- drawer content -->
-        </q-drawer>
 
         <q-page-container>
             <slot name="content">
@@ -32,7 +26,6 @@
                     <q-avatar>
                         <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
                     </q-avatar>
-                    Title
                 </q-toolbar-title>
             </q-toolbar>
         </q-footer>
@@ -48,10 +41,8 @@
     components: {
       'navbar-layout': NavbarLayout
     },
-    data: function() {
-      return {
-        right: false
-      }
+    data() {
+      return {}
     },
   }
 </script>
