@@ -9,7 +9,7 @@
       navbar-layout
 
     q-page-container
-      slot(name="content") Авторизуйтесь
+      router-view
 
     q-footer(elevated class="bg-grey-8 text-white")
       q-toolbar
