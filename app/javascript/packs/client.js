@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import '../api/index'
-import Dashboard from "../components/client/dashboard";
+import '../app/api/index'
+import Dashboard from "app/components/client/dashboard";
 
 document.addEventListener('DOMContentLoaded', () => {
   new Vue({
