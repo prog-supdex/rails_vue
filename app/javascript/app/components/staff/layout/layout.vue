@@ -5,7 +5,7 @@
         q-toolbar-title
           q-avatar
             img(src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg")
-          | Приложение
+          | Приложение Сотрудника
       navbar-layout
 
     q-page-container

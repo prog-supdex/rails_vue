@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import '../app/api/index'
-import Dashboard from "app/components/client/dashboard";
+import Layout from "app/components/client/layout";
+import router from '../app/router'
 
 document.addEventListener('DOMContentLoaded', () => {
   new Vue({
     el: '#app',
-    render: h => h(Dashboard)
+    router,
+    render: h => h(Layout)
   }).$mount()
 })
