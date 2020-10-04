@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import '../app/api/index'
-import Layout from "app/components/staff/layout";
+import Layout from "app/components/staff/layout/layout";
 import router from '../app/router'
 
 document.addEventListener('DOMContentLoaded', () => {
