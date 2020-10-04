@@ -11,7 +11,7 @@ import StaffDashboard from '../components/staff/dashboard'
 import StaffOrgList from '../components/staff/organizations/list'
 import StaffOrgForm from '../components/staff/organizations/form'
 
-export const router = new VueRouter({
+export default new VueRouter({
   mode: 'history',
   routes: [
     { path: '/staffs', component: StaffDashboard, name: 'staff_dashboard',
