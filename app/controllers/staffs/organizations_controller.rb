@@ -1,4 +1,6 @@
 class Staffs::OrganizationsController < ApplicationController
+  before_action :find_organization, only: %i[update destroy]
+
   def index
     render json: Organization.select(:id, :name, :ogrn, :inn, :org_type)
   end
@@ -17,7 +19,6 @@ class Staffs::OrganizationsController < ApplicationController
   end
 
   def update
-    @organization = Organization.find(params[:id])
     @organization.assign_attributes(permitted_params)
     @organization.client_ids = params[:organization][:client_list_id]
     @organization.save
@@ -26,13 +27,16 @@ class Staffs::OrganizationsController < ApplicationController
   end
 
   def destroy
-    @organization = Organization.find(params[:id])
     @organization.destroy
 
     render json: @organization
   end
 
   private
+
+  def find_organization
+    @organization = Organization.find(params[:id])
+  end
 
   def permitted_params
     params.require(:organization).permit(:name, :ogrn, :inn, :org_type)

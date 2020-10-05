@@ -1,12 +1,8 @@
 class Staffs::ClientsController < ApplicationController
+  before :find_client, only: %i[update destroy]
+
   def index
-    @clients = Client.select(:id, :name, :email, :phone)
-
-    render json: @clients
-  end
-
-  def new
-    @client = Client.new
+    render json: Client.select(:id, :name, :email, :phone)
   end
 
   def create
@@ -23,7 +19,6 @@ class Staffs::ClientsController < ApplicationController
   end
 
   def update
-    @client = Client.find(params[:id])
     @client.assign_attributes(permitted_params.except('password'))
     @client.organization_ids << params[:client][:organization_id]
     @client.save
@@ -40,13 +35,16 @@ class Staffs::ClientsController < ApplicationController
   end
 
   def destroy
-    @client = Client.find(params[:id])
     @client.destroy
 
     render json: @client
   end
 
   private
+
+  def find_client
+    @client = Client.find(params[:id])
+  end
 
   def permitted_params
     params.require(:client).permit(:name, :email, :password, :phone)
