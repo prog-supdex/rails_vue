@@ -106,18 +106,15 @@
         }
       },
       editForm: function(id) {
-        this.$api.get('/staffs/organizations/' + id)
+        this.$axios.get('/staffs/organizations/' + id)
           .then(({data}) => {
             this.organization = Object.assign({}, data);
             this.orgId = id
             this.showDialog = true
           })
-          .catch(error => {
-            console.log(error)
-          })
       },
       onSubmit: function () {
-        this.$api({
+        this.$axios({
           method: this.orgId ? 'patch' : 'post',
           url: '/staffs/organizations/' + this.orgId,
           data: {
@@ -126,25 +123,10 @@
         })
           .then(({data}) => {
             if (data.success) {
-              this.$q.notify({
-                icon: 'done',
-                color: 'positive',
-                message: "Организация " + data.object.name + " была создан!"
-              });
-
               this.onReset();
               this.showDialog = false;
               this.$emit('reload-org-list-event');
-            } else {
-              this.$q.notify({
-                icon: 'done',
-                color: 'negative',
-                message: data.errors
-              })
             }
-          })
-          .catch(error => {
-            console.log(error)
           })
       },
       onReset () {
@@ -161,18 +143,10 @@
       },
       deleteRecord: function(orgObject) {
         if (confirm(`Вы уверены, что хотите удалить организацию ${orgObject.name} ?`)) {
-          this.$api.delete('/staffs/organizations/' + orgObject.id)
-            .then(({data}) => {
-              this.$q.notify({
-                icon: 'done',
-                color: 'positive',
-                message: `Организация ${data.name} была удалена!`
-              });
+          this.$axios.delete('/staffs/organizations/' + orgObject.id)
+            .then(_ => {
               this.showDialog = false
               this.$emit('reload-org-list-event');
-            })
-            .catch(error => {
-              console.log(error)
             })
         }
       },

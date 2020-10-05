@@ -25,7 +25,7 @@
     },
     methods: {
       fetchCurrentStaffUser: function () {
-        this.$api.get('/users/current_user')
+        this.$axios.get('/users/current_user')
           .then(({data}) => {
             this.current_user = data
           })

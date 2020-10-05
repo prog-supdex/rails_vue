@@ -132,18 +132,15 @@
         return !(/^\d+$/.test(this.phone)) || 'Неверный формат'
       },
       editForm: function(id) {
-        this.$api.get('/staffs/clients/' + id)
+        this.$axios.get('/staffs/clients/' + id)
           .then(({data}) => {
             this.client = Object.assign({}, data);
             this.clientId = id
             this.showDialog = true
           })
-          .catch(error => {
-            console.log(error)
-          })
       },
       onSubmit() {
-        this.$api({
+        this.$axios({
           method: this.clientId ? 'patch' : 'post',
           url: '/staffs/clients/' + this.clientId,
           data: {
@@ -152,25 +149,10 @@
         })
           .then(({data}) => {
             if (data.success) {
-              this.$q.notify({
-                icon: 'done',
-                color: 'positive',
-                message: "Клиент " + data.object.name + " был создан!"
-              });
-
               this.onReset();
               this.showDialog = false;
               this.$emit('reload-client-list-event')
-            } else {
-              this.$q.notify({
-                icon: 'done',
-                color: 'negative',
-                message: data.errors
-              })
             }
-          })
-          .catch(error => {
-            console.log(error)
           })
       },
       onReset () {
@@ -204,7 +186,7 @@
       },
       existsClientByField: function(field, value) {
         return new Promise((resolve, reject) => {
-          this.$api.post('/staffs/clients/exists', {
+          this.$axios.post('/staffs/clients/exists', {
             field: field,
             value: value
           }).then(({data}) => {
@@ -218,18 +200,10 @@
       },
       deleteRecord: function(clientObject) {
         if (confirm(`Вы уверены, что хотите удалить клиента ${clientObject.name} ?`)) {
-          this.$api.delete('/staffs/clients/' + clientObject.id)
-            .then(({data}) => {
-              this.$q.notify({
-                icon: 'done',
-                color: 'positive',
-                message: `Клиент ${data.name} был удален!`
-              });
+          this.$axios.delete('/staffs/clients/' + clientObject.id)
+            .then(_ => {
               this.showDialog = false
               this.$emit('reload-client-list-event');
-            })
-            .catch(error => {
-              console.log(error)
             })
         }
       },

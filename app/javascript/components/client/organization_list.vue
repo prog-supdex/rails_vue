@@ -35,13 +35,10 @@
     },
     methods: {
       fetchOrganizations: function () {
-        this.$api.get('/clients/organizations')
+        this.$axios.get('/clients/organizations')
           .then(({data}) => {
             this.loading = false
             this.organizations = data
-          })
-          .catch(error => {
-            console.log(error)
           })
       }
     }
