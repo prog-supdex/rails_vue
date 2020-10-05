@@ -1,73 +1,73 @@
 <template lang="pug">
-    div
-        q-dialog(v-model="showDialog" title="Создание организации" persistent)
-            q-card(style="width: 750px; max-width: 85vw;")
-                q-form(class="justify-center q-pa-lg" @submit="checkForm" @reset.prevent.stop="onReset")
-                    q-input(
-                        ref="name"
-                        v-model="organization.name"
-                        label="Имя"
-                        filled
-                        placeholder="Название организации"
-                        lazy-rules
-                        :rules="[\
-                            val => val !== '' || 'Укажите имя',\
-                        ]"
-                    )
-                    br
-                    q-select(
-                        ref="org_type"
-                        filled
-                        emit-value
-                        map-options
-                        option-value="id"
-                        option-label="name"
-                        v-model="organization.org_type"
-                        :options="options"
-                        label="Тип организации"
-                        :rules="[val => !!val || 'Обязательное поле']"
-                    )
-                    q-select(
-                        v-if="orgId"
-                        filled
-                        v-model="organization.client_list_id"
-                        :options="clients"
-                        map-options
-                        emit-value
-                        option-value="id"
-                        option-label="name"
-                        multiple
-                        label="Клиенты организации"
-                    )
-                    q-input(
-                        ref="inn"
-                        v-model="organization.inn"
-                        label="ИНН"
-                        filled
-                        placeholder="ИНН организации"
-                        lazy-rules
-                        :rules="[\
-                            val => val !== '' || 'Укажите ИНН',\
-                        ]"
-                    )
-                    br
-                    q-input(
-                        ref="ogrn"
-                        v-model="organization.ogrn"
-                        label="ОГРН"
-                        filled
-                        placeholder="ОГРН организации"
-                        lazy-rules
-                        :rules="[\
-                            val => val !== '' || 'Укажите ОГРН',\
-                        ]"
-                    )
-                    br
-                    div
-                        q-btn(:label="orgId ? 'Обновить' : 'Создать'" type="submit" color="primary")
-                        q-btn(v-if="orgId == ''" label="Сбросить" type="reset" color="primary" flat class="q-ml-sm")
-                        q-btn(v-else label="Удалить" @click="deleteRecord(organization)" color="primary" flat class="q-ml-sm")
-                        q-btn(v-close-popup label="Закрыть" color="secondary")
+  div
+    q-dialog(v-model="showDialog" title="Создание организации" persistent)
+      q-card(style="width: 750px; max-width: 85vw;")
+        q-form(class="justify-center q-pa-lg" @submit="checkForm" @reset.prevent.stop="onReset")
+          q-input(
+            ref="name"
+            v-model="organization.name"
+            label="Имя"
+            filled
+            placeholder="Название организации"
+            lazy-rules
+            :rules="[\
+              val => val !== '' || 'Укажите имя',\
+            ]"
+          )
+          br
+          q-select(
+            ref="org_type"
+            filled
+            emit-value
+            map-options
+            option-value="id"
+            option-label="name"
+            v-model="organization.org_type"
+            :options="options"
+            label="Тип организации"
+            :rules="[val => !!val || 'Обязательное поле']"
+          )
+          q-select(
+            v-if="orgId"
+            filled
+            v-model="organization.client_list_id"
+            :options="clients"
+            map-options
+            emit-value
+            option-value="id"
+            option-label="name"
+            multiple
+            label="Клиенты организации"
+          )
+          q-input(
+            ref="inn"
+            v-model="organization.inn"
+            label="ИНН"
+            filled
+            placeholder="ИНН организации"
+            lazy-rules
+            :rules="[\
+              val => val !== '' || 'Укажите ИНН',\
+            ]"
+          )
+          br
+          q-input(
+            ref="ogrn"
+            v-model="organization.ogrn"
+            label="ОГРН"
+            filled
+            placeholder="ОГРН организации"
+            lazy-rules
+            :rules="[\
+              val => val !== '' || 'Укажите ОГРН',\
+            ]"
+          )
+          br
+          div
+            q-btn(:label="orgId ? 'Обновить' : 'Создать'" type="submit" color="primary")
+            q-btn(v-if="orgId == ''" label="Сбросить" type="reset" color="primary" flat class="q-ml-sm")
+            q-btn(v-else label="Удалить" @click="deleteRecord(organization)" color="primary" flat class="q-ml-sm")
+            q-btn(v-close-popup label="Закрыть" color="secondary")
 </template>
 
 
@@ -187,6 +187,3 @@
     }
   }
 </script>
-
-<style scoped lang="scss">
-</style>

@@ -1,8 +1,8 @@
 <template lang="pug">
-    layout
-        template(v-slot:content)
-            div
-                organization-list
+  layout
+    template(v-slot:content)
+      div
+        organization-list
 </template>
 
 <script>
@@ -17,6 +17,3 @@
     }
   }
 </script>
-
-<style scoped lang="scss">
-</style>

@@ -1,26 +1,26 @@
 <template lang="pug">
-    div(class="q-pa-md")
-        q-table(
-            title="Клиенты"
-            :data="clients"
-            :columns="columns"
-            row-key="name"
-            dark
-            color="amber",
-            :loading="loading"
-            binary-state-sort
-            class="relative-position"
-        )
-            template(v-slot:top)
-                q-btn(dense color="secondary" label="Создать клиента" @click="openClientForm(null)" no-caps)
+  div(class="q-pa-md")
+    q-table(
+      title="Клиенты"
+      :data="clients"
+      :columns="columns"
+      row-key="name"
+      dark
+      color="amber",
+      :loading="loading"
+      binary-state-sort
+      class="relative-position"
+    )
+      template(v-slot:top)
+        q-btn(dense color="secondary" label="Создать клиента" @click="openClientForm(null)" no-caps)
 
-            template(v-slot:body-cell-actions="props")
-                q-td(:props="props")
-                    q-btn(color="blue" label="Редактировать" @click="openClientForm(props.row.id)" size=sm no-caps)
-                    q-btn(color="red" label="Удалить"  @click="deleteRecord(props.row)" size=sm no-caps)
-            template(v-slot:loading)
-                q-inner-loading(showing)
-                    q-spinner-cube(color="orange" size="5.5em")
+      template(v-slot:body-cell-actions="props")
+        q-td(:props="props")
+          q-btn(color="blue" label="Редактировать" @click="openClientForm(props.row.id)" size=sm no-caps)
+          q-btn(color="red" label="Удалить"  @click="deleteRecord(props.row)" size=sm no-caps)
+      template(v-slot:loading)
+        q-inner-loading(showing)
+          q-spinner-cube(color="orange" size="5.5em")
 </template>
 
 <script>
@@ -56,6 +56,3 @@
     }
   }
 </script>
-
-<style scoped lang="scss">
-</style>

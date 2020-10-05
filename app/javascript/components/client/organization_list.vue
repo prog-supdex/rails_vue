@@ -1,17 +1,17 @@
 <template lang="pug">
-    div(class="q-pa-md")
-        q-table(
-            title="Организации"
-            :data="organizations"
-            :columns="columns"
-            row-key="name"
-            dark
-            color="amber"
-            :loading="loading"
-        )
-            template(v-slot:loading)
-                q-inner-loading(showing)
-                    q-spinner-cube(color="orange" size="5.5em")
+  div(class="q-pa-md")
+    q-table(
+      title="Организации"
+      :data="organizations"
+      :columns="columns"
+      row-key="name"
+      dark
+      color="amber"
+      :loading="loading"
+    )
+      template(v-slot:loading)
+        q-inner-loading(showing)
+          q-spinner-cube(color="orange" size="5.5em")
 </template>
 
 <script>
@@ -49,6 +49,3 @@
     }
   }
 </script>
-
-<style scoped lang="scss">
-</style>

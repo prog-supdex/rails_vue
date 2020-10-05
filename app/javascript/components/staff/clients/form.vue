@@ -1,85 +1,85 @@
 <template lang="pug">
-    div
-        q-dialog(v-model="showDialog" title="Создание клиента" persistent)
-            q-card(style="width: 750px; max-width: 85vw;")
-                q-form(class="justify-center q-pa-lg" @submit="checkForm" @reset.prevent.stop="onReset")
-                    q-input(
-                        ref="name"
-                        v-model="client.name"
-                        label="Имя"
-                        filled
-                        placeholder="Имя клиента"
-                        lazy-rules
-                        :rules="[\
-                            val => val !== '' || 'Укажите имя',\
-                            val => val.length >= 5 || 'Имя должно содержать не меньше 5 символов'\
-                        ]"
-                    )
-                    br
-                    q-input(
-                        ref="email"
-                        v-model="client.email"
-                        label="Email"
-                        filled
-                        placeholder="Email клиента"
-                        lazy-rules
-                        :rules="[\
-                            val => val !== '' || 'Укажите email',\
-                            emailCheck,\
-                            existsClientByEmail\
-                        ]"
-                    )
-                    br
-                    q-select(
-                        v-if="clientId"
-                        filled
-                        v-model="client.organization_list_id"
-                        :options="organizations"
-                        map-options
-                        stack-label
-                        use-input
-                        use-chips
-                        emit-value
-                        option-value="id"
-                        option-label="name"
-                        label="Организации"
-                    )
-                    br
-                    q-input(
-                        ref="phone"
-                        v-model="client.phone"
-                        label="Телефон"
-                        filled
-                        mask="# (###) ### - ## - ##"
-                        unmasked-value
-                        placeholder="Телефон клиента"
-                        lazy-rules
-                        :rules="[\
-                            val => val !== '' || 'Укажите телефон',\
-                            phoneCheck,\
-                            existsClientByPhone\
-                        ]"
-                    )
-                    br
-                    q-input(
-                        v-if="clientId == ''"
-                        ref="password"
-                        v-model="client.password"
-                        label="Пароль"
-                        placeholder="Пароль клиента"
-                        filled
-                        lazy-rules
-                        :rules="[\
-                            val => val !== '' || 'Укажите пароль',\
-                            val => val.length >= 8 || 'Пароль не может содержать меньше 8 символов'\
-                        ]"
-                    )
-                    br
-                    div
-                        q-btn(:label="clientId ? 'Обновить' : 'Создать'" type="submit" color="primary")
-                        q-btn(v-if="clientId == ''" label="Сбросить" type="reset" color="primary" flat class="q-ml-sm")
-                        q-btn(v-else label="Удалить" @click="deleteRecord(client)" color="primary" flat class="q-ml-sm")
-                        q-btn(v-close-popup label="Закрыть" color="secondary")
+  div
+    q-dialog(v-model="showDialog" title="Создание клиента" persistent)
+      q-card(style="width: 750px; max-width: 85vw;")
+        q-form(class="justify-center q-pa-lg" @submit="checkForm" @reset.prevent.stop="onReset")
+          q-input(
+            ref="name"
+            v-model="client.name"
+            label="Имя"
+            filled
+            placeholder="Имя клиента"
+            lazy-rules
+            :rules="[\
+              val => val !== '' || 'Укажите имя',\
+              val => val.length >= 5 || 'Имя должно содержать не меньше 5 символов'\
+            ]"
+          )
+          br
+          q-input(
+            ref="email"
+            v-model="client.email"
+            label="Email"
+            filled
+            placeholder="Email клиента"
+            lazy-rules
+            :rules="[\
+              val => val !== '' || 'Укажите email',\
+              emailCheck,\
+              existsClientByEmail\
+            ]"
+          )
+          br
+          q-select(
+            v-if="clientId"
+            filled
+            v-model="client.organization_list_id"
+            :options="organizations"
+            map-options
+            stack-label
+            use-input
+            use-chips
+            emit-value
+            option-value="id"
+            option-label="name"
+            label="Организации"
+          )
+          br
+          q-input(
+            ref="phone"
+            v-model="client.phone"
+            label="Телефон"
+            filled
+            mask="# (###) ### - ## - ##"
+            unmasked-value
+            placeholder="Телефон клиента"
+            lazy-rules
+            :rules="[\
+              val => val !== '' || 'Укажите телефон',\
+              phoneCheck,\
+              existsClientByPhone\
+            ]"
+          )
+          br
+          q-input(
+            v-if="clientId == ''"
+            ref="password"
+            v-model="client.password"
+            label="Пароль"
+            placeholder="Пароль клиента"
+            filled
+            lazy-rules
+            :rules="[\
+              val => val !== '' || 'Укажите пароль',\
+              val => val.length >= 8 || 'Пароль не может содержать меньше 8 символов'\
+            ]"
+          )
+          br
+          div
+            q-btn(:label="clientId ? 'Обновить' : 'Создать'" type="submit" color="primary")
+            q-btn(v-if="clientId == ''" label="Сбросить" type="reset" color="primary" flat class="q-ml-sm")
+            q-btn(v-else label="Удалить" @click="deleteRecord(client)" color="primary" flat class="q-ml-sm")
+            q-btn(v-close-popup label="Закрыть" color="secondary")
 </template>
 
 
@@ -244,6 +244,3 @@
     }
   }
 </script>
-
-<style scoped lang="scss">
-</style>

@@ -1,12 +1,12 @@
 <template lang="pug">
-    layout
-        template(v-slot:content)
-            div(class="q-pa-md")
-                client-form(ref="clientForm" v-on:reload-client-list-event="fetchClients")
-                organization-form(ref="orgForm" v-on:reload-org-list-event="fetchOrganizations")
-            div
-                client-list(ref="clientList" v-on:open-client-form-event="openClientForm" v-on:delete-client-event="deleteClientRecord")
-                organization-list(ref="orgList" v-on:open-org-form-event="openOrgForm" v-on:delete-org-event="deleteOrgRecord")
+  layout
+    template(v-slot:content)
+      div(class="q-pa-md")
+        client-form(ref="clientForm" v-on:reload-client-list-event="fetchClients")
+        organization-form(ref="orgForm" v-on:reload-org-list-event="fetchOrganizations")
+      div
+        client-list(ref="clientList" v-on:open-client-form-event="openClientForm" v-on:delete-client-event="deleteClientRecord")
+        organization-list(ref="orgList" v-on:open-org-form-event="openOrgForm" v-on:delete-org-event="deleteOrgRecord")
 </template>
 
 <script>
@@ -47,6 +47,3 @@
     }
   }
 </script>
-
-<style scoped lang="scss">
-</style>
