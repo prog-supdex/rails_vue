@@ -13,11 +13,7 @@ class Staffs::ClientsController < ApplicationController
     @client = Client.new(permitted_params)
     @client.save
 
-    render json: {
-      success: @client.errors.messages.blank?,
-      object: @client,
-      errors: @client.errors.full_messages.join(', ')
-    }
+    render json: response_data(@client)
   end
 
   def show
@@ -32,11 +28,7 @@ class Staffs::ClientsController < ApplicationController
     @client.organization_ids << params[:client][:organization_id]
     @client.save
 
-    render json: {
-      success: @client.errors.messages.blank?,
-      object: @client,
-      errors: @client.errors.full_messages.join(', ')
-    }
+    render json: response_data(@client)
   end
 
   def check_exists_client_by_field

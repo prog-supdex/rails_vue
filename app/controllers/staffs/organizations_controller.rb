@@ -7,11 +7,7 @@ class Staffs::OrganizationsController < ApplicationController
     @organization = Organization.new(permitted_params)
     @organization.save
 
-    render json: {
-      success: @organization.errors.messages.blank?,
-      object: @organization,
-      errors: @organization.errors.messages
-    }
+    render json: response_data(@organization)
   end
 
   def show
@@ -26,11 +22,7 @@ class Staffs::OrganizationsController < ApplicationController
     @organization.client_ids = params[:organization][:client_list_id]
     @organization.save
 
-    render json: {
-      success: @organization.errors.messages.blank?,
-      object: @organization,
-      errors: @organization.errors.messages
-    }
+    render json: response_data(@organization)
   end
 
   def destroy
