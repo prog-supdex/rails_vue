@@ -72,7 +72,6 @@
 
 
 <script>
-  import axios from "axios";
   import {fetchClients} from "../../mixins/fetchClients";
 
   export default {
@@ -107,7 +106,7 @@
         }
       },
       editForm: function(id) {
-        axios.get('/staffs/organizations/' + id)
+        this.$api.get('/staffs/organizations/' + id)
           .then(({data}) => {
             this.organization = Object.assign({}, data);
             this.orgId = id
@@ -118,7 +117,7 @@
           })
       },
       onSubmit: function () {
-        axios({
+        this.$api({
           method: this.orgId ? 'patch' : 'post',
           url: '/staffs/organizations/' + this.orgId,
           data: {
@@ -162,7 +161,7 @@
       },
       deleteRecord: function(orgObject) {
         if (confirm(`Вы уверены, что хотите удалить организацию ${orgObject.name} ?`)) {
-          axios.delete('/staffs/organizations/' + orgObject.id)
+          this.$api.delete('/staffs/organizations/' + orgObject.id)
             .then(({data}) => {
               this.$q.notify({
                 icon: 'done',

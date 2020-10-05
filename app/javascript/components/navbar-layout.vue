@@ -13,8 +13,6 @@
 </template>
 
 <script>
-  import axios from "axios";
-
   export default {
     name: 'NavbarLayout',
     data: function() {
@@ -27,7 +25,7 @@
     },
     methods: {
       fetchCurrentStaffUser: function () {
-        axios.get('/users/current_user')
+        this.$api.get('/users/current_user')
           .then(({data}) => {
             this.current_user = data
           })

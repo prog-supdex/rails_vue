@@ -15,8 +15,6 @@
 </template>
 
 <script>
-  import axios from "axios";
-
   export default {
     name: 'organization-client-list',
     data: function() {
@@ -37,7 +35,7 @@
     },
     methods: {
       fetchOrganizations: function () {
-        axios.get('/clients/organizations')
+        this.$api.get('/clients/organizations')
           .then(({data}) => {
             this.loading = false
             this.organizations = data

@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export const fetchClients = {
   data() {
     this.loading = true
@@ -9,7 +7,7 @@ export const fetchClients = {
   },
   methods: {
     fetchClients: function () {
-      axios.get('/staffs/clients')
+      this.$api.get('/staffs/clients')
         .then(({data}) => {
           this.clients = data
           this.loading = false

@@ -84,7 +84,6 @@
 
 
 <script>
-  import axios from "axios";
   import {fetchOrganizations} from "../../mixins/fetchOrganizations";
 
   export default {
@@ -133,7 +132,7 @@
         return !(/^\d+$/.test(this.phone)) || 'Неверный формат'
       },
       editForm: function(id) {
-        axios.get('/staffs/clients/' + id)
+        this.$api.get('/staffs/clients/' + id)
           .then(({data}) => {
             this.client = Object.assign({}, data);
             this.clientId = id
@@ -144,7 +143,7 @@
           })
       },
       onSubmit() {
-        axios({
+        this.$api({
           method: this.clientId ? 'patch' : 'post',
           url: '/staffs/clients/' + this.clientId,
           data: {
@@ -205,7 +204,7 @@
       },
       existsClientByField: function(field, value) {
         return new Promise((resolve, reject) => {
-          axios.post('/staffs/clients/exists', {
+          this.$api.post('/staffs/clients/exists', {
             field: field,
             value: value
           }).then(({data}) => {
@@ -219,7 +218,7 @@
       },
       deleteRecord: function(clientObject) {
         if (confirm(`Вы уверены, что хотите удалить клиента ${clientObject.name} ?`)) {
-          axios.delete('/staffs/clients/' + clientObject.id)
+          this.$api.delete('/staffs/clients/' + clientObject.id)
             .then(({data}) => {
               this.$q.notify({
                 icon: 'done',

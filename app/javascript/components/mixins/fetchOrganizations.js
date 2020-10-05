@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export const fetchOrganizations = {
   data() {
     this.loading = true
@@ -9,7 +7,7 @@ export const fetchOrganizations = {
   },
   methods: {
     fetchOrganizations: function () {
-      axios.get('/staffs/organizations')
+      this.$api.get('/staffs/organizations')
         .then(({data}) => {
           this.organizations = data
           this.loading = false
