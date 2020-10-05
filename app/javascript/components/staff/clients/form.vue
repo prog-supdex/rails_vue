@@ -183,7 +183,7 @@
         return this.existsClientByField('email', val);
       },
       existsClientByField: function(field, value) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _) => {
           this.$axios.post('/staffs/clients/exists', {
             field: field,
             value: value

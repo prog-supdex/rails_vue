@@ -48,7 +48,7 @@ axios.interceptors.response.use(
                     .replace('__NAME__', res.data.object.name)
                     .replace('__ACTION__', METHODS_WITH_TRANSLATE[res.config.method])
         });
-      } else {
+      } else if (res.data && res.data['errors']) {
         Notify.create({
           icon: 'done',
           color: 'negative',
