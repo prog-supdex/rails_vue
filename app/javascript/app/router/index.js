@@ -3,24 +3,29 @@ import VueRouter from "vue-router";
 
 Vue.use(VueRouter)
 
-import StaffClientList from '../components/staff/clients/list'
-import StaffClientForm from '../components/staff/clients/form'
-
-import StaffDashboard from '../components/staff/dashboard'
-
-import StaffOrgList from '../components/staff/organizations/list'
-import StaffOrgForm from '../components/staff/organizations/form'
-
 export default new VueRouter({
   mode: 'history',
   routes: [
-    { path: '/staffs', component: StaffDashboard, name: 'staff_dashboard',
+    {
+      path: '/staffs',
+      name: 'staff_dashboard',
+      component: () => import('../components/staff/dashboard')
+    },
+    {
+      path: '/staffs/clients',
+      name: 'staff_clients',
+      component: () => import('../components/staff/clients/list'),
       children: [
-        { path: '/staffs/clients', component: StaffClientList, name: 'staff_clients' },
-        { path: '/staffs/clients/:id', component: StaffClientList, name: 'staff_client' },
-        { path: '/staffs/organizations', component: StaffOrgList, name: 'staff_organizations' },
-        { path: '/staffs/organizations/:id', component: StaffOrgList, name: 'staff_organizations' }
-      ]
+        { path: '/staffs/clients/:id', component: () => import('../components/staff/clients/form'), name: 'staff_client_form' }
+      ],
+    },
+    {
+      path: '/staffs/organizations/',
+      name: 'staff_organizations',
+      component: () => import('../components/staff/organizations/list'),
+      children: [
+        { path: '/staffs/organizations/:id', component: () =>  import('../components/staff/organizations/form'), name: 'staff_organization_form' }
+      ],
     }
   ]
 })
