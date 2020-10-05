@@ -6,6 +6,7 @@ class Organization < ApplicationRecord
 
   has_many :organization_clients, dependent: :destroy
   has_many :clients, through: :organization_clients
+  has_many :equipments
 
   validates :name, :org_type, :inn, :ogrn, presence: true
 
