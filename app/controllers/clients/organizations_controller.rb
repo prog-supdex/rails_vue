@@ -1,4 +1,4 @@
-class Clients::OrganizationsController < ApplicationController
+class Clients::OrganizationsController < Clients::ApplicationController
   def index
     unless client_signed_in?
       render json: [] and return

@@ -11,6 +11,10 @@ const DATA_WITH_URLS = [
   {
     url: '/staffs/clients',
     template_message: 'Объект "Клиент «__NAME__»" был __ACTION__!',
+  },
+  {
+    url: '/staffs/equipments',
+    template_message: 'Объект "Оборудование «__NAME__»" был __ACTION__!',
   }
 ]
 
@@ -79,6 +83,13 @@ const api = {
       show: (id) => axios.get(`/staffs/clients/${id}`),
       delete: (id) => axios.delete(`/staffs/clients/${id}`),
       exists: (params) => axios.post('/staffs/clients/exists', params),
+    },
+    equipments: {
+      index: () => axios.get('/staffs/equipments'),
+      show: (id) => axios.get(`/staffs/equipments/${id}`),
+      delete: (id) => axios.delete(`/staffs/equipments/${id}`),
+      exists: (params) => axios.post('/staffs/equipments/exists', params),
+      free_equipments: () => axios.get('/staffs/equipments/free_equipments')
     }
   },
 }

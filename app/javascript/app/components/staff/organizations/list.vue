@@ -11,15 +11,16 @@
       binary-state-sort
     )
       template(v-slot:top)
-        q-btn(dense color="secondary" label="Создать организацию" @click="openOrgForm(null)" no-caps)
+        q-btn(dense color="secondary" label="Создать организацию" @click="showPage('new')" no-caps)
 
       template(v-slot:body-cell-actions="props")
         q-td(:props="props")
-          q-btn(color="blue" label="Редактировать" @click="openOrgForm(props.row.id)" size=sm no-caps)
+          q-btn(color="blue" label="Редактировать" @click="showPage(props.row.id)" size=sm no-caps)
           q-btn(color="red" label="Удалить"  @click="deleteOrgRecord(props.row)" size=sm no-caps)
       template(v-slot:loading)
         q-inner-loading(showing)
           q-spinner-cube(color="orange" size="5.5em")
+    router-view
 </template>
 
 <script>
@@ -45,8 +46,8 @@
       }
     },
     methods: {
-      openOrgForm: function(orgId) {
-        this.$emit('open-org-form-event', orgId);
+      showPage: function(id) {
+        this.$router.push({ name: 'staff_organization_form', params: { id }  })
       },
       deleteOrgRecord: function(orgObject) {
         this.$emit('delete-org-event', orgObject);

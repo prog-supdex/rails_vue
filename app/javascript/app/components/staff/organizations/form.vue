@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    q-dialog(v-model="showDialog" title="Создание организации" persistent)
+    q-dialog(v-model="showDialog" title="Создание организации" persistent @hide="pushToItems")
       q-card(style="width: 750px; max-width: 85vw;")
         q-form(class="justify-center q-pa-lg" @submit="checkForm" @reset.prevent.stop="onReset")
           q-input(
@@ -27,6 +27,7 @@
             label="Тип организации"
             :rules="[val => !!val || 'Обязательное поле']"
           )
+          br
           q-select(
             v-if="orgId"
             filled
@@ -39,6 +40,20 @@
             multiple
             label="Клиенты организации"
           )
+          br
+          q-select(
+            v-if="orgId"
+            filled
+            v-model="organization.equipment_list_id"
+            :options="equipments"
+            map-options
+            emit-value
+            option-value="id"
+            option-label="name"
+            multiple
+            label="Оборудования"
+          )
+          br
           q-input(
             ref="inn"
             v-model="organization.inn"
@@ -84,13 +99,33 @@
           org_type: '',
           inn: '',
           ogrn: '',
-          client_list_id: []
+          client_list_id: [],
+          equipment_list_id: []
         },
         clients: [],
+        equipments: [],
         orgId: '',
         showDialog: false,
         options: [ { id: 'individual', name: 'ИП' }, { id: 'juridical', name: 'Юр. Лицо' } ]
       }
+    },
+    computed: {
+      id() {
+        return this.$route.params.id;
+      }
+    },
+    created() {
+      if (this.id && this.id != 'new') {
+        this.$api.staffs.organizations.show(this.id).then(({data}) => {
+          console.log(data);
+          this.organization = Object.assign({}, data);
+          this.orgId = this.id;
+        })
+      }
+      this.showDialog = true;
+      this.$api.staffs.equipments.free_equipments().then(({data}) => {
+        this.equipments = data;
+      })
     },
     methods: {
       checkForm: function (e) {
@@ -104,14 +139,6 @@
         } else {
           this.onSubmit();
         }
-      },
-      editForm: function(id) {
-        this.$axios.get('/staffs/organizations/' + id)
-          .then(({data}) => {
-            this.organization = Object.assign({}, data);
-            this.orgId = id
-            this.showDialog = true
-          })
       },
       onSubmit: function () {
         this.$axios({
@@ -143,19 +170,17 @@
       },
       deleteRecord: function(orgObject) {
         if (confirm(`Вы уверены, что хотите удалить организацию ${orgObject.name} ?`)) {
-          this.$axios.delete('/staffs/organizations/' + orgObject.id)
-            .then(_ => {
-              this.showDialog = false
-              this.$emit('reload-org-list-event');
-            })
+          this.$api.staffs.organizations.delete(orgObject.id).then(_ => {
+            this.showDialog = false
+            this.$emit('reload-org-list-event');
+          })
         }
       },
-      openForm: function(orgId) {
-        if (!orgId) {
-          this.showDialog = true
-        } else {
-          this.editForm(orgId)
-        }
+      openForm() {
+        this.showDialog = true
+      },
+      pushToItems() {
+        this.$router.push({ name: 'staff_organizations' })
       }
     }
   }

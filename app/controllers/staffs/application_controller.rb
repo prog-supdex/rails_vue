@@ -1,3 +1,3 @@
-class Staffs::ApplicationController < ActionController::Base
+class Staffs::ApplicationController < ApplicationController
   layout 'staffs/application'
 end

@@ -1,13 +1,19 @@
 class Staffs::EquipmentsController < Staffs::ApplicationController
+  before_action :find_equipment, only: %i[update destroy]
+
   def index
     render json: Equipment.select(:id, :name, :serial_number, :equipment_type)
   end
 
-  def create
-    @equip = Equipment.new(permitted_params)
-    @equip.save
+  def free_equipments
+    render json: Equipment.free_equipments.select(:id, :name)
+  end
 
-    render json: response_data(@equip)
+  def create
+    @equipment = Equipment.new(permitted_params)
+    @equipment.save
+
+    render json: response_data(@equipment)
   end
 
   def show
@@ -15,27 +21,28 @@ class Staffs::EquipmentsController < Staffs::ApplicationController
   end
 
   def update
-    @equip = Equipment.find(params[:id])
-    @equip.assign_attributes(permitted_params)
-    @equip.save
+    @equipment.update(permitted_params)
 
-    render json: response_data(@equip)
+    render json: response_data(@equipment)
   end
 
-  def check_exists_client_by_field
-    render json: ExistsClientByField.call(field: params[:field], value: params[:value])
+  def exists_by_serial_number
+    render json: Equipment.exists?(serial_number: params[:value])
   end
 
   def destroy
-    @equip = Client.find(params[:id])
-    @equip.destroy
+    @equipment.destroy
 
-    render json: @equip
+    render json: @equipment
   end
 
   private
 
+  def find_equipment
+    @equipment = Equipment.find(params[:id])
+  end
+
   def permitted_params
-    params.require(:client).permit(:name, :equipment_type, :serial_number, :organization_id)
+    params.require(:equipment).permit(:name, :equipment_type, :serial_number, :organization_id)
   end
 end

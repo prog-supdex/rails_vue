@@ -15,4 +15,10 @@ class Organization < ApplicationRecord
       .select("#{table_name}.*, array_agg(organization_clients.client_id) AS client_list_id")
       .group("#{table_name}.id")
   end
+
+  def self.with_equipment_ids
+    left_joins(:equipments)
+      .select("#{table_name}.*, array_agg(equipments.id) AS equipment_list_id")
+      .group("#{table_name}.id")
+  end
 end

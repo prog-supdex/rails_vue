@@ -7,7 +7,7 @@ export const fetchClients = {
   },
   methods: {
     fetchClients() {
-      this.$axios.get('/staffs/clients')
+      this.$api.staffs.clients.index()
         .then(({data}) => {
           this.clients = data
           this.loading = false

@@ -12,15 +12,16 @@
       class="relative-position"
     )
       template(v-slot:top)
-        q-btn(dense color="secondary" label="Создать клиента" @click="openClientForm(null)" no-caps)
+        q-btn(dense color="secondary" label="Создать клиента" @click="showPage('new')" no-caps)
 
       template(v-slot:body-cell-actions="props")
         q-td(:props="props")
-          q-btn(color="blue" label="Редактировать" @click="openClientForm(props.row.id)" size=sm no-caps)
+          q-btn(color="blue" label="Редактировать" @click="showPage(props.row.id)" size=sm no-caps)
           q-btn(color="red" label="Удалить"  @click="deleteRecord(props.row)" size=sm no-caps)
       template(v-slot:loading)
         q-inner-loading(showing)
           q-spinner-cube(color="orange" size="5.5em")
+    router-view
 </template>
 
 <script>
@@ -50,9 +51,13 @@
       deleteRecord: function(clientObject) {
         this.$emit('delete-client-event', clientObject);
       },
-      openClientForm: function(clientId) {
-        this.$emit('open-client-form-event', clientId);
+      showPage: function(id) {
+        this.$router.push({ name: 'staff_client_form', params: { id }  })
       },
+      // showPage: function(id) {
+      //   this.$router.push({ name: 'staff_client_form', params: { id } })
+      //   this.$router.push({ name: 'staff_organization_form', params: { id } })
+      // }
     }
   }
 </script>

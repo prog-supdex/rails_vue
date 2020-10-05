@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    q-dialog(v-model="showDialog" title="Создание клиента" persistent)
+    q-dialog(v-model="showDialog" title="Создание клиента" persistent @hide="pushToItems")
       q-card(style="width: 750px; max-width: 85vw;")
         q-form(class="justify-center q-pa-lg" @submit="checkForm" @reset.prevent.stop="onReset")
           q-input(
@@ -40,6 +40,7 @@
             use-input
             use-chips
             emit-value
+            multiple
             option-value="id"
             option-label="name"
             label="Организации"
@@ -103,6 +104,20 @@
         showDialog: false,
       }
     },
+    computed: {
+      id() {
+        return this.$route.params.id;
+      }
+    },
+    created() {
+      if (this.id && this.id != 'new') {
+        this.$api.staffs.clients.show(this.id).then(({data}) => {
+          this.client = Object.assign({}, data);
+          this.clientId = this.id;
+        })
+      }
+      this.showDialog = true;
+    },
     methods: {
       checkForm() {
         this.$refs.email.validate();
@@ -128,14 +143,6 @@
       },
       phoneCheck: function(val) {
         return !(/^\d+$/.test(this.phone)) || 'Неверный формат'
-      },
-      editForm: function(id) {
-        this.$axios.get('/staffs/clients/' + id)
-          .then(({data}) => {
-            this.client = Object.assign({}, data);
-            this.clientId = id
-            this.showDialog = true
-          })
       },
       onSubmit() {
         this.$axios({
@@ -184,10 +191,11 @@
       },
       existsClientByField: function(field, value) {
         return new Promise((resolve, _) => {
-          this.$axios.post('/staffs/clients/exists', {
+          this.$api.staffs.clients.exists({
             field: field,
             value: value
-          }).then(({data}) => {
+          })
+            .then(({data}) => {
               if (field == 'phone') {
                 resolve(!data || 'Такой телефон уже присутствует в базе')
               } else {
@@ -198,19 +206,18 @@
       },
       deleteRecord: function(clientObject) {
         if (confirm(`Вы уверены, что хотите удалить клиента ${clientObject.name} ?`)) {
-          this.$axios.delete('/staffs/clients/' + clientObject.id)
+          this.$api.staffs.clients.delete(clientObject.id)
             .then(_ => {
               this.showDialog = false
               this.$emit('reload-client-list-event');
             })
         }
       },
-      openForm: function(clientId) {
-        if (!clientId) {
-          this.showDialog = true
-        } else {
-          this.editForm(clientId)
-        }
+      openForm() {
+        this.showDialog = true
+      },
+      pushToItems() {
+        this.$router.push({ name: 'staff_clients' })
       }
     }
   }

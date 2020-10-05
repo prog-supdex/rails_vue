@@ -11,11 +11,14 @@ Rails.application.routes.draw do
     get '/users/current_user', to: 'users#current_user', as: :current_user
 
     namespace :staffs do
-      resources :clients
-      resources :organizations
-      get '/clients/new', to: 'clients#new', as: :new_clients
+      get '/equipments/free_equipments', to: 'equipments#free_equipments', as: :free_equipments
       get '/users/current_user', to: 'users#current_user', as: :current_staff_user
       post '/clients/exists', to: 'clients#check_exists_client_by_field', as: :client_exists
+      post '/equipments/exists', to: 'equipments#exists_by_serial_number', as: :equipment_exists
+
+      resources :clients
+      resources :organizations
+      resources :equipments
     end
 
     namespace :clients do

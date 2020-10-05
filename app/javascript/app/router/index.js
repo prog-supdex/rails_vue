@@ -24,8 +24,16 @@ export default new VueRouter({
       name: 'staff_organizations',
       component: () => import('../components/staff/organizations/list'),
       children: [
-        { path: '/staffs/organizations/:id', component: () =>  import('../components/staff/organizations/form'), name: 'staff_organization_form' }
+        { path: '/staffs/organizations/:id', component: () => import('../components/staff/organizations/form'), name: 'staff_organization_form' }
       ],
-    }
+    },
+    {
+      path: '/staffs/equipments',
+      name: 'staff_equipments',
+      component: () => import('../components/staff/equipments/list'),
+      children: [
+        { path: '/staffs/equipments/:id', component: () => import('../components/staff/equipments/form'), name: 'staff_equipment_form' }
+      ],
+    },
   ]
 })

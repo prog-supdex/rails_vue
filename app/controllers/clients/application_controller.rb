@@ -1,3 +1,3 @@
-class Clients::ApplicationController < ActionController::Base
+class Clients::ApplicationController < ApplicationController
   layout 'clients/application'
 end

@@ -1,9 +1,11 @@
-class Staffs::ClientsController < ApplicationController
+class Staffs::ClientsController < Staffs::ApplicationController
   before :find_client, only: %i[update destroy]
 
   def index
     render json: Client.select(:id, :name, :email, :phone)
   end
+
+  def new; end
 
   def create
     @client = Client.new(permitted_params)

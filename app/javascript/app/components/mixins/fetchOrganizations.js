@@ -7,7 +7,7 @@ export const fetchOrganizations = {
   },
   methods: {
     fetchOrganizations() {
-      this.$axios.get('/staffs/organizations')
+      this.$api.staffs.organizations.index()
         .then(({data}) => {
           this.organizations = data
           this.loading = false
