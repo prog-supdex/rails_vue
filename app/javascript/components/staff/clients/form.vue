@@ -124,8 +124,6 @@
       },
       emailCheck: function(val) {
         const emailCheck = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        console.log(val)
-        console.log(emailCheck.test(val))
         return emailCheck.test(val) || 'Неверный формат'
       },
       phoneCheck: function(val) {

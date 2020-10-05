@@ -6,7 +6,7 @@ export const fetchOrganizations = {
     this.fetchOrganizations();
   },
   methods: {
-    fetchOrganizations: function () {
+    fetchOrganizations() {
       this.$axios.get('/staffs/organizations')
         .then(({data}) => {
           this.organizations = data

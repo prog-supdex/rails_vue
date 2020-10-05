@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
+import '../quasar/index'
 import { Notify } from 'quasar/dist/quasar.common'
 
 const DATA_WITH_URLS = [
