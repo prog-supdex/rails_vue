@@ -26,8 +26,7 @@ const DATA_WITH_URLS = [
   },
   {
     url: 'users/reset_password',
-    template_message: 'Пароль пользователя «__NAME__»" был изменен!',
-    only_method: ['post']
+    template_message: 'Пароль пользователя «__NAME__»" был изменен!'
   }
 ]
 
