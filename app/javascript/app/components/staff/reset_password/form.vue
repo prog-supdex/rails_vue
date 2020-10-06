@@ -78,7 +78,6 @@
         return val == this.$refs.password.value || 'Пароли должны совпадать'
       },
       onSubmit() {
-        console.log()
         this.$api.users.reset_password({
           id: this.id,
           type: this.type,
