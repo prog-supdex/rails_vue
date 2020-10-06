@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "@quasar/extras": "^1.9.7",
     "@rails/webpacker": "5.2.1",
     "axios": "^0.20.0",
+    "quasar": "^1.14.0",
     "vue": "^2.6.12",
     "vue-loader": "^15.9.3",
     "vue-template-compiler": "^2.6.12"
