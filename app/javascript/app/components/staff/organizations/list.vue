@@ -9,6 +9,7 @@
       :loading="loading"
       color="amber"
       binary-state-sort
+      v-on:reload-org-list-event="fetchOrganizations"
     )
       template(v-slot:top)
         q-btn(dense color="secondary" label="Создать организацию" @click="showPage('new')" no-caps)

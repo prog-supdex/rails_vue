@@ -1,9 +1,27 @@
 <template lang="pug">
     q-tabs(align="left")
-        div(v-if="current_user")
-            span Вошли как {{ current_user.name }} ({{ current_user.email }})</span>
-            a(href="/staffs/sign_out" class="white") Выйти
+      div(v-if="current_user")
+        span Вошли как {{ current_user.name }} ({{ current_user.email }})</span>
+        a(href="/staffs/sign_out" class="white") Выйти
 
+      q-route-tab(
+        icon="wc"
+        label="Клиенты"
+        to="/staffs/clients"
+        exact
+      )
+      q-route-tab(
+        icon="build"
+        label="Оборудования"
+        to="/staffs/equipments"
+        exact
+      )
+      q-route-tab(
+        icon="apartment"
+        label="Организации"
+        to="/staffs/organizations"
+        exact
+      )
 </template>
 
 <script>

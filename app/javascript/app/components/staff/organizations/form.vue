@@ -117,7 +117,6 @@
     created() {
       if (this.id && this.id != 'new') {
         this.$api.staffs.organizations.show(this.id).then(({data}) => {
-          console.log(data);
           this.organization = Object.assign({}, data);
           this.orgId = this.id;
         })
@@ -175,9 +174,6 @@
             this.$emit('reload-org-list-event');
           })
         }
-      },
-      openForm() {
-        this.showDialog = true
       },
       pushToItems() {
         this.$router.push({ name: 'staff_organizations' })

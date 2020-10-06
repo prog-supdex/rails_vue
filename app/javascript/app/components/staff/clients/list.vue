@@ -10,6 +10,7 @@
       :loading="loading"
       binary-state-sort
       class="relative-position"
+      v-on:reload-client-list-event="fetchClients"
     )
       template(v-slot:top)
         q-btn(dense color="secondary" label="Создать клиента" @click="showPage('new')" no-caps)
@@ -53,11 +54,7 @@
       },
       showPage: function(id) {
         this.$router.push({ name: 'staff_client_form', params: { id }  })
-      },
-      // showPage: function(id) {
-      //   this.$router.push({ name: 'staff_client_form', params: { id } })
-      //   this.$router.push({ name: 'staff_organization_form', params: { id } })
-      // }
+      }
     }
   }
 </script>

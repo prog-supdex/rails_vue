@@ -158,9 +158,6 @@
             })
         }
       },
-      openForm() {
-        this.showDialog = true
-      },
       pushToItems() {
         this.$router.push({ name: 'staff_equipments' })
       }

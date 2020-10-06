@@ -7,9 +7,15 @@ export default new VueRouter({
   mode: 'history',
   routes: [
     {
-      path: '/staffs',
-      name: 'staff_dashboard',
-      component: () => import('../components/staff/dashboard')
+      path: '/staffs', redirect: '/staffs/organizations'
+    },
+    {
+      path: '/clients', redirect: '/clients/organizations'
+    },
+    {
+      path: '/clients/organizations/',
+      name: 'client_organizations',
+      component: () => import('../components/client/organization_list')
     },
     {
       path: '/staffs/clients',

@@ -10,6 +10,7 @@
       :loading="loading"
       binary-state-sort
       class="relative-position"
+      v-on:reload-equip-list-event="fetchEquipments"
     )
       template(v-slot:top)
         q-btn(dense color="secondary" label="Создать оборудование" @click="showPage('new')" no-caps)
@@ -43,12 +44,15 @@
       }
     },
     created() {
-      this.$api.staffs.equipments.index().then(({data}) => {
-        this.equipments = data
-        this.loading = false
-      })
+      this.fetchEquipments()
     },
     methods: {
+      fetchEquipments() {
+        this.$api.staffs.equipments.index().then(({data}) => {
+          this.equipments = data
+          this.loading = false
+        })
+      },
       showPage: function(id) {
         this.$router.push({ name: 'staff_equipment_form', params: { id } })
       },
