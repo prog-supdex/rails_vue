@@ -8,15 +8,23 @@ class Clients::SessionsController < Devise::SessionsController
   #   super
   # end
 
-  # POST /resource/sign_in
-  # def create
-  #   super
-  # end
+  def create
+    resource = Client.find_for_database_authentication(email: sign_in_params[:email])
 
-  # DELETE /resource/sign_out
-  # def destroy
-  #   super
-  # end
+    return invalid_login_attempt unless resource
+
+    if resource.valid_password?(sign_in_params[:password])
+      sign_in("client", resource)
+
+      render json: { success: true, name: resource.email } and return
+    end
+
+    invalid_login_attempt
+  end
+
+  def destroy
+    super
+  end
 
   # protected
 

@@ -1,6 +1,8 @@
 class Staffs::ClientsController < Staffs::ApplicationController
   before :find_client, only: %i[update destroy]
 
+  #before_action :authenticate_user!
+
   def index
     render json: Client.select(:id, :name, :email, :phone)
   end

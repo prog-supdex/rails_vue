@@ -15,6 +15,19 @@ const DATA_WITH_URLS = [
   {
     url: '/staffs/equipments',
     template_message: 'Объект "Оборудование «__NAME__»" был __ACTION__!',
+  },
+  {
+    url: '/staffs/sign_in',
+    template_message: 'Пользователь «__NAME__»" был авторизован!',
+  },
+  {
+    url: '/clients/sign_in',
+    template_message: 'Пользователь «__NAME__»" был авторизован!',
+  },
+  {
+    url: 'users/reset_password',
+    template_message: 'Пароль пользователя «__NAME__»" был изменен!',
+    only_method: ['post']
   }
 ]
 
@@ -90,8 +103,16 @@ const api = {
       delete: (id) => axios.delete(`/staffs/equipments/${id}`),
       exists: (params) => axios.post('/staffs/equipments/exists', params),
       free_equipments: () => axios.get('/staffs/equipments/free_equipments')
-    }
+    },
+    sign_out: () => axios.get('/staffs/sign_out')
   },
+  clients: {
+    sign_out: () => axios.get('/clients/sign_out')
+  },
+  users: {
+    reset_password: (params) => axios.post('/users/reset_password', params),
+    reset_password_form: (id, type) => axios.post(`/users/reset_password/${id}/${type}`)
+  }
 }
 
 Vue.prototype.$axios = axios

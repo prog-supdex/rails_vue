@@ -2,7 +2,7 @@
   q-tabs(align="left")
     div(v-if="current_user")
       span Вошли как {{ current_user.name }} ({{ current_user.email }})</span>
-      a(href="/clients/sign_out" class="white") Выйти
+      q-btn(color="white" text-color="black" @click="signOut" label="Выйти")
 
     q-route-tab(
       icon="apartment"
@@ -13,22 +13,17 @@
 </template>
 
 <script>
+  import {currentUser} from "../../mixins/currentUser";
+
   export default {
     name: 'NavbarLayout',
-    data: function() {
-      return {
-        current_user: null
-      }
-    },
+    mixins: [currentUser],
     created: function() {
-      this.fetchCurrentClientUser();
+      this.fetchCurrentUser('clients');
     },
     methods: {
-      fetchCurrentClientUser: function () {
-        this.$axios.get('/users/current_user')
-          .then(({data}) => {
-            this.current_user = data
-          })
+      signOut() {
+        this.$api.clients.sign_out()
       }
     }
   }

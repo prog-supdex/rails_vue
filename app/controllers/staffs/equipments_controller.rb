@@ -1,5 +1,6 @@
 class Staffs::EquipmentsController < Staffs::ApplicationController
   before_action :find_equipment, only: %i[update destroy]
+  #before_action :authenticate_user!
 
   def index
     render json: Equipment.select(:id, :name, :serial_number, :equipment_type)

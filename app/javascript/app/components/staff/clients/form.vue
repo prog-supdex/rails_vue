@@ -80,6 +80,7 @@
             q-btn(:label="clientId ? 'Обновить' : 'Создать'" type="submit" color="primary")
             q-btn(v-if="clientId == ''" label="Сбросить" type="reset" color="primary" flat class="q-ml-sm")
             q-btn(v-else label="Удалить" @click="deleteRecord(client)" color="primary" flat class="q-ml-sm")
+            q-btn(label="Сбросить пароль" @click="reset_password_form(client)" color="primary" flat class="q-ml-sm")
             q-btn(v-close-popup label="Закрыть" color="secondary")
 </template>
 
@@ -212,6 +213,9 @@
               this.$emit('reload-client-list-event');
             })
         }
+      },
+      resetPasswordForm: function(id) {
+        this.$router.push({ name: 'staff_clients', params: { id: id, type: 'clients' } })
       },
       pushToItems() {
         this.$router.push({ name: 'staff_clients' })
