@@ -44,12 +44,8 @@
    },
    methods: {
      onSubmit() {
-       this.$axios({
-         method: 'post',
-         url: '/staffs/sign_in/',
-         data: {
-           staff: this.staff
-         }
+       this.$api.staffs.sign_in({
+         staff: this.staff
        })
          .then(({data}) => {
            if (data['success']) {

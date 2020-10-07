@@ -44,16 +44,12 @@
    },
    methods: {
      onSubmit() {
-       this.$axios({
-         method: 'post',
-         url: '/clients/sign_in/',
-         data: {
-           staff: this.staff
-         }
+       this.$api.clients.sign_in({
+         staff: this.staff
        })
          .then(({data}) => {
            if (data['success']) {
-             this.$router.push({ name: 'client_organizations'  })
+             this.$router.push({ name: 'client_organizations' })
            }
          })
      },

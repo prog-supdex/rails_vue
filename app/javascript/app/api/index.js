@@ -103,10 +103,12 @@ const api = {
       exists: (params) => axios.post('/staffs/equipments/exists', params),
       free_equipments: () => axios.get('/staffs/equipments/free_equipments')
     },
-    sign_out: () => axios.get('/staffs/sign_out')
+    sign_out: () => axios.get('/staffs/sign_out'),
+    sign_in: (params) => axios.post('/staffs/sign_in/', params)
   },
   clients: {
-    sign_out: () => axios.get('/clients/sign_out')
+    sign_out: () => axios.get('/clients/sign_out'),
+    sign_in: (params) => axios.post('/clients/sign_in/', params)
   },
   users: {
     reset_password: (params) => axios.post('/users/reset_password', params),
