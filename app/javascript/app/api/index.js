@@ -88,10 +88,14 @@ const api = {
     organizations: {
       index: () => axios.get('/staffs/organizations'),
       show: (id) => axios.get(`/staffs/organizations/${id}`),
+      create: (params) => axios.post('/staffs/organizations', params),
+      update: (id, params) => axios.post(`/staffs/organizations/${id}`, params),
       delete: (id) => axios.delete(`/staffs/organizations/${id}`)
     },
     clients: {
       index: () => axios.get('/staffs/clients'),
+      create: (params) => axios.post('/staffs/clients', params),
+      update: (id, params) => axios.patch(`/staffs/clients/${id}`, params),
       show: (id) => axios.get(`/staffs/clients/${id}`),
       delete: (id) => axios.delete(`/staffs/clients/${id}`),
       exists: (params) => axios.post('/staffs/clients/exists', params),
@@ -101,18 +105,24 @@ const api = {
       show: (id) => axios.get(`/staffs/equipments/${id}`),
       delete: (id) => axios.delete(`/staffs/equipments/${id}`),
       exists: (params) => axios.post('/staffs/equipments/exists', params),
-      free_equipments: () => axios.get('/staffs/equipments/free_equipments')
+      free_equipments: () => axios.get('/staffs/equipments/free_equipments'),
+      create: (params) => axios.post('/staffs/equipments', params),
+      update: (id, params) => axios.patch(`/staffs/equipments/${id}`, params)
     },
     sign_out: () => axios.get('/staffs/sign_out'),
     sign_in: (params) => axios.post('/staffs/sign_in/', params)
   },
   clients: {
     sign_out: () => axios.get('/clients/sign_out'),
-    sign_in: (params) => axios.post('/clients/sign_in/', params)
+    sign_in: (params) => axios.post('/clients/sign_in/', params),
+    organizations: {
+      index: () => axios.get('/clients/organizations'),
+    }
   },
   users: {
     reset_password: (params) => axios.post('/users/reset_password', params),
-    reset_password_form: (id, type) => axios.post(`/users/reset_password/${id}/${type}`)
+    reset_password_form: (id, type) => axios.post(`/users/reset_password/${id}/${type}`),
+    current_user: () => axios.get('/users/current_user')
   }
 }
 

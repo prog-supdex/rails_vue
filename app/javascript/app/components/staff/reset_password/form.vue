@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    q-dialog(v-model="showDialog" title="Сбросить пароль" persistent @hide="pushToItems")
+    q-dialog(v-model="showDialog" title="Сбросить пароль" persistent @hide="pushToClients")
       q-card(style="width: 750px; max-width: 85vw;")
         q-form(class="justify-center q-pa-lg" @submit="checkForm" @reset.prevent.stop="onReset")
           q-input(
@@ -98,7 +98,7 @@
         this.$refs.password.resetValidation();
         this.$refs.confirm_password.resetValidation();
       },
-      pushToItems() {
+      pushToClients() {
         this.$router.push({ name: 'staff_clients' })
       }
     }

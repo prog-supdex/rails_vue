@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    q-dialog(v-model="showDialog" title="Создание клиента" persistent @hide="pushToItems")
+    q-dialog(v-model="showDialog" title="Создание клиента" persistent @hide="pushToClients")
       q-card(style="width: 750px; max-width: 85vw;")
         q-form(class="justify-center q-pa-lg" @submit="checkForm" @reset.prevent.stop="onReset")
           q-input(
@@ -86,7 +86,7 @@
 
 
 <script>
-  import {fetchOrganizations} from "../../mixins/fetchOrganizations";
+  import { fetchOrganizations } from '../../mixins/fetchOrganizations'
 
   export default {
     name: 'client-form',
@@ -146,20 +146,17 @@
         return !(/^\d+$/.test(this.phone)) || 'Неверный формат'
       },
       onSubmit() {
-        this.$axios({
-          method: this.clientId ? 'patch' : 'post',
-          url: '/staffs/clients/' + this.clientId,
-          data: {
-            client: this.client
+        let params = { client: this.client }
+        let scope = this.$api.staffs.clients
+        scope = this.clientId ? scope.update(this.clientId, params) : scope.create(params)
+
+        scope.then(({data}) => {
+          if (data.success) {
+            this.onReset();
+            this.showDialog = false;
+            this.$emit('reload-client-list-event')
           }
         })
-          .then(({data}) => {
-            if (data.success) {
-              this.onReset();
-              this.showDialog = false;
-              this.$emit('reload-client-list-event')
-            }
-          })
       },
       onReset () {
         this.name = '';
@@ -217,7 +214,7 @@
       resetPasswordForm: function(id) {
         this.$router.push({ name: 'staff_clients', params: { id: id, type: 'clients' } })
       },
-      pushToItems() {
+      pushToClients() {
         this.$router.push({ name: 'staff_clients' })
       }
     }

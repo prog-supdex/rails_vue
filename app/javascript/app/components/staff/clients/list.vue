@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import { fetchClients } from "../../mixins/fetchClients";
+  import { fetchClients } from '../../mixins/fetchClients'
 
   export default {
     name: 'client-list',

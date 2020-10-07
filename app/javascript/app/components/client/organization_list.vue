@@ -35,7 +35,7 @@
     },
     methods: {
       fetchOrganizations: function () {
-        this.$axios.get('/clients/organizations')
+        this.$api.clients.organizations.index()
           .then(({data}) => {
             this.loading = false
             this.organizations = data

@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    q-dialog(v-model="showDialog" title="Создание организации" persistent @hide="pushToItems")
+    q-dialog(v-model="showDialog" title="Создание организации" persistent @hide="pushToOrganizations")
       q-card(style="width: 750px; max-width: 85vw;")
         q-form(class="justify-center q-pa-lg" @submit="checkForm" @reset.prevent.stop="onReset")
           q-input(
@@ -87,7 +87,7 @@
 
 
 <script>
-  import {fetchClients} from "../../mixins/fetchClients";
+  import { fetchClients } from '../../mixins/fetchClients'
 
   export default {
     name: 'organization-form',
@@ -140,13 +140,11 @@
         }
       },
       onSubmit: function () {
-        this.$axios({
-          method: this.orgId ? 'patch' : 'post',
-          url: '/staffs/organizations/' + this.orgId,
-          data: {
-            organization: this.organization
-          }
-        })
+        let params = { organization: this.organization }
+        let scope = this.$api.staffs.organizations
+        scope = this.orgId ? scope.update(this.orgId, params) : scope.create(params)
+
+        scope
           .then(({data}) => {
             if (data.success) {
               this.onReset();
@@ -175,7 +173,7 @@
           })
         }
       },
-      pushToItems() {
+      pushToOrganizations() {
         this.$router.push({ name: 'staff_organizations' })
       }
     }

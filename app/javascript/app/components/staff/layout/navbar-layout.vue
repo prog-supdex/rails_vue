@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import {currentUser} from "../../mixins/currentUser";
+  import { currentUser } from '../../mixins/currentUser'
 
   export default {
     name: 'NavbarLayout',

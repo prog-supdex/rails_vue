@@ -1,5 +1,5 @@
 class Staffs::ClientsController < Staffs::ApplicationController
-  before :find_client, only: %i[update destroy]
+  before_action :find_client, only: %i[update destroy]
 
   #before_action :authenticate_user!
 
@@ -31,11 +31,7 @@ class Staffs::ClientsController < Staffs::ApplicationController
   end
 
   def check_exists_client_by_field
-    respond_to do |format|
-      format.json do
-        render json: ExistsClientByField.call(field: params[:field], value: params[:value])
-      end
-    end
+    render json: ExistsClientByField.call(field: params[:field], value: params[:value])
   end
 
   def destroy

@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import {fetchOrganizations} from "../../mixins/fetchOrganizations";
+  import { fetchOrganizations } from '../../mixins/fetchOrganizations'
 
   export default {
     name: 'organization-list',

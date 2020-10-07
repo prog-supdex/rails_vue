@@ -6,7 +6,7 @@ export const currentUser = {
   },
   methods: {
     fetchCurrentUser: function (type) {
-      this.$axios.get('/users/current_user')
+      this.$api.users.current_user()
         .then(({data}) => {
           if (!data) {
             this.$router.push({ name: `${type}_sign_in` })
