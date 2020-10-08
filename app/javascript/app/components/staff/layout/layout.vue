@@ -5,11 +5,11 @@
         q-toolbar-title
           q-avatar
             img(src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg")
-          | Приложение
+          | Приложение Сотрудника
       navbar-layout
 
     q-page-container
-      slot(name="content") Авторизуйтесь
+      router-view
 
     q-footer(elevated class="bg-grey-8 text-white")
       q-toolbar

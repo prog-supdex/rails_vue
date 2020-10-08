@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    q-dialog(v-model="showDialog" title="Создание клиента" persistent)
+    q-dialog(v-model="showDialog" title="Создание клиента" persistent @hide="pushToClients")
       q-card(style="width: 750px; max-width: 85vw;")
         q-form(class="justify-center q-pa-lg" @submit="checkForm" @reset.prevent.stop="onReset")
           q-input(
@@ -40,6 +40,7 @@
             use-input
             use-chips
             emit-value
+            multiple
             option-value="id"
             option-label="name"
             label="Организации"
@@ -79,12 +80,13 @@
             q-btn(:label="clientId ? 'Обновить' : 'Создать'" type="submit" color="primary")
             q-btn(v-if="clientId == ''" label="Сбросить" type="reset" color="primary" flat class="q-ml-sm")
             q-btn(v-else label="Удалить" @click="deleteRecord(client)" color="primary" flat class="q-ml-sm")
+            q-btn(label="Сбросить пароль" @click="reset_password_form(client)" color="primary" flat class="q-ml-sm")
             q-btn(v-close-popup label="Закрыть" color="secondary")
 </template>
 
 
 <script>
-  import {fetchOrganizations} from "../../mixins/fetchOrganizations";
+  import { fetchOrganizations } from '../../mixins/fetchOrganizations'
 
   export default {
     name: 'client-form',
@@ -102,6 +104,20 @@
         organizations: [],
         showDialog: false,
       }
+    },
+    computed: {
+      id() {
+        return this.$route.params.id;
+      }
+    },
+    created() {
+      if (this.id && this.id != 'new') {
+        this.$api.staffs.clients.show(this.id).then(({data}) => {
+          this.client = Object.assign({}, data);
+          this.clientId = this.id;
+        })
+      }
+      this.showDialog = true;
     },
     methods: {
       checkForm() {
@@ -129,29 +145,18 @@
       phoneCheck: function(val) {
         return !(/^\d+$/.test(this.phone)) || 'Неверный формат'
       },
-      editForm: function(id) {
-        this.$axios.get('/staffs/clients/' + id)
-          .then(({data}) => {
-            this.client = Object.assign({}, data);
-            this.clientId = id
-            this.showDialog = true
-          })
-      },
       onSubmit() {
-        this.$axios({
-          method: this.clientId ? 'patch' : 'post',
-          url: '/staffs/clients/' + this.clientId,
-          data: {
-            client: this.client
+        let params = { client: this.client }
+        let scope = this.$api.staffs.clients
+        scope = this.clientId ? scope.update(this.clientId, params) : scope.create(params)
+
+        scope.then(({data}) => {
+          if (data.success) {
+            this.onReset();
+            this.showDialog = false;
+            this.$emit('reload-client-list-event')
           }
         })
-          .then(({data}) => {
-            if (data.success) {
-              this.onReset();
-              this.showDialog = false;
-              this.$emit('reload-client-list-event')
-            }
-          })
       },
       onReset () {
         this.name = '';
@@ -184,10 +189,11 @@
       },
       existsClientByField: function(field, value) {
         return new Promise((resolve, _) => {
-          this.$axios.post('/staffs/clients/exists', {
+          this.$api.staffs.clients.exists({
             field: field,
             value: value
-          }).then(({data}) => {
+          })
+            .then(({data}) => {
               if (field == 'phone') {
                 resolve(!data || 'Такой телефон уже присутствует в базе')
               } else {
@@ -198,19 +204,18 @@
       },
       deleteRecord: function(clientObject) {
         if (confirm(`Вы уверены, что хотите удалить клиента ${clientObject.name} ?`)) {
-          this.$axios.delete('/staffs/clients/' + clientObject.id)
+          this.$api.staffs.clients.delete(clientObject.id)
             .then(_ => {
               this.showDialog = false
               this.$emit('reload-client-list-event');
             })
         }
       },
-      openForm: function(clientId) {
-        if (!clientId) {
-          this.showDialog = true
-        } else {
-          this.editForm(clientId)
-        }
+      resetPasswordForm: function(id) {
+        this.$router.push({ name: 'staff_clients', params: { id: id, type: 'clients' } })
+      },
+      pushToClients() {
+        this.$router.push({ name: 'staff_clients' })
       }
     }
   }

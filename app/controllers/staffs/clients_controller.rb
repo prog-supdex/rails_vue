@@ -1,9 +1,13 @@
-class Staffs::ClientsController < ApplicationController
-  before :find_client, only: %i[update destroy]
+class Staffs::ClientsController < Staffs::ApplicationController
+  before_action :find_client, only: %i[update destroy]
+
+  #before_action :authenticate_user!
 
   def index
     render json: Client.select(:id, :name, :email, :phone)
   end
+
+  def new; end
 
   def create
     @client = Client.new(permitted_params)
@@ -27,11 +31,7 @@ class Staffs::ClientsController < ApplicationController
   end
 
   def check_exists_client_by_field
-    respond_to do |format|
-      format.json do
-        render json: ExistsClientByField.call(field: params[:field], value: params[:value])
-      end
-    end
+    render json: ExistsClientByField.call(field: params[:field], value: params[:value])
   end
 
   def destroy

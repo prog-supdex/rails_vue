@@ -1,24 +1,36 @@
 Rails.application.routes.draw do
-  devise_for :clients, path: :clients, controllers: {
-    sessions: 'clients/sessions'
-  }
+  root 'application#index'
 
-  devise_for :staffs, path: :staffs, controllers: {
-    sessions: 'staffs/sessions'
-  }
+  constraints ->(req) { req.format == :json } do
+    get '/users/current_user', to: 'users#current_user', as: :current_user
+    post '/users/reset_password', to: 'users#reset_password', as: :user_reset_password
 
-  root to: 'welcome#index'
-  get '/users/current_user', to: 'users#current_user', as: :current_user, defaults: { format: :json }
+    namespace :staffs do
+      get '/equipments/free_equipments', to: 'equipments#free_equipments', as: :free_equipments
+      get '/users/current_user', to: 'users#current_user', as: :current_staff_user
+      post '/clients/exists', to: 'clients#check_exists_client_by_field', as: :client_exists
+      post '/equipments/exists', to: 'equipments#exists_by_serial_number', as: :equipment_exists
 
-  namespace :staffs do
-    resources :clients, defaults: { format: :json }
-    resources :organizations, defaults: { format: :json }
-    get '/clients/new', to: 'clients#new', as: :new_clients
-    get '/users/current_user', to: 'users#current_user', as: :current_staff_user, defaults: { format: :json }
-    post '/clients/exists', to: 'clients#check_exists_client_by_field', as: :client_exists, defaults: { format: :json }
+      resources :clients
+      resources :organizations
+      resources :equipments
+    end
+
+    namespace :clients do
+      resources :organizations, only: :index
+    end
+
+    devise_for :clients, path: :clients, controllers: {
+      sessions: 'clients/sessions', passwords: 'clients/passwords'
+    }
+
+    devise_for :staffs, path: :staffs, controllers: {
+      sessions: 'staffs/sessions', passwords: 'staffs/passwords'
+    }
   end
 
-  namespace :clients do
-    resources :organizations, only: :index, defaults: { format: :json }
-  end
+  get '/clients(/*slug)', to: 'clients/application#index'
+  get '/staffs(/*slug)', to: 'staffs/application#index'
+
+  get '*slug', to: 'welcome#index'
 end
