@@ -4,7 +4,7 @@ class Staffs::OrganizationsController < Staffs::ApplicationController
   #before_action :authenticate_user!
 
   def index
-    render json: Organization.select(:id, :name, :ogrn, :inn, :org_type)
+    render json: OrganizationsFinderQuery.call(query: params['query'])
   end
 
   def new; end

@@ -56,6 +56,10 @@ axios.interceptors.response.use(
     }
 
     if (matchedObject && Object.keys(METHODS_WITH_TRANSLATE).includes(res.config.method)) {
+      if (!res.data || !res.data.object) {
+        return res;
+      }
+
       if (res.data['success']) {
         Notify.create({
           icon: 'done',
@@ -86,7 +90,7 @@ axios.interceptors.response.use(
 const api = {
   staffs: {
     organizations: {
-      index: () => axios.get('/staffs/organizations'),
+      index: (query) => axios.get('/staffs/organizations', { params: { query: query } }),
       show: (id) => axios.get(`/staffs/organizations/${id}`),
       create: (params) => axios.post('/staffs/organizations', params),
       update: (id, params) => axios.post(`/staffs/organizations/${id}`, params),

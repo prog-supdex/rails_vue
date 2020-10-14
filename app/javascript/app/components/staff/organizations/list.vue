@@ -12,7 +12,15 @@
       v-on:reload-org-list-event="fetchOrganizations"
     )
       template(v-slot:top)
-        q-btn(dense color="secondary" label="Создать организацию" @click="showPage('new')" no-caps)
+        .row
+          .col-12.search-block
+            q-input(v-model="searchString" name="search-string" bg-color="white" class="inline search-label vertical-middle" type="search")
+              template(v-slot:append)
+                q-icon(name="search")
+
+            q-btn(dense color="secondary" class="inline" label="Найти" @click="fetchOrganizations")
+          .col-12
+            q-btn(dense color="secondary" label="Создать организацию" @click="showPage('new')" no-caps)
 
       template(v-slot:body-cell-actions="props")
         q-td(:props="props")
@@ -21,6 +29,9 @@
       template(v-slot:loading)
         q-inner-loading(showing)
           q-spinner-cube(color="orange" size="5.5em")
+      template(v-slot:no-data)
+        q-icon(name="warning" class="text-red" style="font-size: 2rem;")
+        span Ничего не найдено
     router-view
 </template>
 
@@ -56,3 +67,19 @@
     }
   }
 </script>
+
+<style lang="scss">
+  .search-block {
+    margin-bottom: 10px;
+
+    .search-label {
+      .q-field__control, .q-field__marginal {
+        height: 30px;
+      }
+
+      input {
+        padding-left: 10px;
+      }
+    }
+  }
+</style>
