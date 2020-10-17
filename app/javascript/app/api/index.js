@@ -90,7 +90,7 @@ axios.interceptors.response.use(
 const api = {
   staffs: {
     organizations: {
-      index: (query) => axios.get('/staffs/organizations', { params: { query: query } }),
+      index: (params) => axios.get('/staffs/organizations', { params: params }),
       show: (id) => axios.get(`/staffs/organizations/${id}`),
       create: (params) => axios.post('/staffs/organizations', params),
       update: (id, params) => axios.post(`/staffs/organizations/${id}`, params),

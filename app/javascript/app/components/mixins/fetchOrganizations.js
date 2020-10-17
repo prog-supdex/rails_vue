@@ -8,10 +8,9 @@ export const fetchOrganizations = {
   },
   methods: {
     fetchOrganizations() {
-      console.log(this.searchString)
       this.$api.staffs.organizations.index(this.searchString)
         .then(({data}) => {
-          this.organizations = data
+          this.organizations = data.organizations
           this.loading = false
         })
     }

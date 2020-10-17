@@ -1,10 +1,14 @@
 class Staffs::OrganizationsController < Staffs::ApplicationController
+  include Pagy::Backend
+
   before_action :find_organization, only: %i[update destroy]
 
   #before_action :authenticate_user!
 
   def index
-    render json: OrganizationsFinderQuery.call(query: params['query'])
+    @pagy, @records = pagy(OrganizationsFinderQuery.call(params: params), items: 10)
+
+    render json: { organizations: @records, pagy: pagy_metadata(@pagy), sort: { field: params[:sort_field], desc: params[:desc] } }
   end
 
   def new; end
