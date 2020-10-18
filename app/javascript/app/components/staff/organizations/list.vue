@@ -11,7 +11,7 @@
       binary-state-sort
       :filter="filter"
       @request="onRequest"
-      v-on:reload-org-list-event="fetchOrganizations"
+      v-on:reload-org-list-event="onRequest"
     )
       template(v-slot:top-left)
         q-btn(dense color="secondary" label="Создать организацию" @click="showPage('new')" no-caps)
