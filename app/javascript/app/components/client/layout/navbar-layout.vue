@@ -1,7 +1,7 @@
 <template lang="pug">
   q-tabs(align="left")
-    div(v-if="current_user")
-      span Вошли как {{ current_user.name }} ({{ current_user.email }})</span>
+    div(v-if="currentUser")
+      span Вошли как {{ currentUser.name }} ({{ currentUser.email }})</span>
       q-btn(color="white" text-color="black" @click="signOut" label="Выйти")
 
     q-route-tab(
@@ -13,17 +13,19 @@
 </template>
 
 <script>
-  import { currentUser } from '../../mixins/currentUser'
-
   export default {
     name: 'NavbarLayout',
-    mixins: [currentUser],
-    created: function() {
-      this.fetchCurrentUser('clients');
+    computed: {
+      currentUser () {
+        return this.$store.getters.currentUser
+      }
     },
     methods: {
       signOut() {
-        this.$api.clients.sign_out()
+        this.$api.clients.sign_out().then(_ => {
+          this.$store.commit('SET_CURRENT_USER', null)
+          this.$router.push({ name: 'clients_sign_in' })
+        })
       }
     }
   }

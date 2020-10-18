@@ -49,7 +49,11 @@
        })
          .then(({data}) => {
            if (data['success']) {
-             this.$router.push({ name: 'client_organizations' })
+             this.$store.dispatch('currentUser')
+               .finally(() => (
+                   this.$router.push({ name: 'client_organizations' })
+                 )
+               )
            }
          })
      },
