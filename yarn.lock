@@ -855,6 +855,11 @@
   resolved "https://registry.yarnpkg.com/@quasar/extras/-/extras-1.9.7.tgz#143c77fcea9b1ca742031087b5a90d20c42eff37"
   integrity sha512-LvcY8ILYrW6SV49xH+XeXKPnxFjDRQIX1Uaa10XDarW9y99pL+lUNFUI7wFzO6SwoMP18BlpEnC3BEqnSZ7OAA==
 
+"@rails/actioncable@^6.0.2":
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-6.0.3.tgz#722b4b639936129307ddbab3a390f6bcacf3e7bc"
+  integrity sha512-I01hgqxxnOgOtJTGlq0ZsGJYiTEEiSGVEGQn3vimZSqEP1HqzyFNbzGTq14Xdyeow2yGJjygjoFF1pmtE+SQaw==
+
 "@rails/webpacker@5.2.1":
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/@rails/webpacker/-/webpacker-5.2.1.tgz#87cdbd4af2090ae2d74bdc51f6f04717d907c5b3"
@@ -898,6 +903,11 @@
     webpack-assets-manifest "^3.1.1"
     webpack-cli "^3.3.12"
     webpack-sources "^1.4.3"
+
+"@types/actioncable@^5.2.3":
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/@types/actioncable/-/actioncable-5.2.3.tgz#215689835399a1be6e7271a2a9d8c8d476c0fd6a"
+  integrity sha512-RxPohXyK0PmC+xAnIrdrd/+0Rp5Pc3e0gMIw+Rc4EorbXApS+i8D00dDC6RxDCXNrmQaIBwiu5iCE7JurC38kA==
 
 "@types/glob@^7.1.1":
   version "7.1.3"
@@ -1125,6 +1135,19 @@ acorn@^7.1.1:
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.4.0.tgz#e1ad486e6c54501634c6c397c5c121daa383607c"
   integrity sha512-+G7P8jJmCHr+S+cLfQxygbWhXy+8YTVGzAkpEbcLo2mLoL7tij/VG41QSHACSf5QgYRhMZYHuNc6drJaO0Da+w==
+
+actioncable-vue@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/actioncable-vue/-/actioncable-vue-2.3.2.tgz#cffc11169494df27fc12362175bad945a920b9cb"
+  integrity sha512-sKokpp0ei5j43GTivjEmw1MAsDgDOUCP40Lxz44NfxUSgZno3z47fasRMBE92lhNXVOi0lNRf4294qEqW929Yg==
+  dependencies:
+    "@rails/actioncable" "^6.0.2"
+    "@types/actioncable" "^5.2.3"
+
+actioncable@^5.2.4-4:
+  version "5.2.4-4"
+  resolved "https://registry.yarnpkg.com/actioncable/-/actioncable-5.2.4-4.tgz#0f74282a18e30443a510de867f704837ceab3332"
+  integrity sha512-qlsr7nTyGwP5mdGSRL3uJsXgbsZ/T/j3cE7QlmcjRKXDuHcm0X0P95/+Ah/cqtx5F3Q2gFYosppGD0uorF8voQ==
 
 aggregate-error@^3.0.0:
   version "3.1.0"

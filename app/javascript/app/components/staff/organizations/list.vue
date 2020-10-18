@@ -67,6 +67,11 @@
         pagination: this.pagination,
         filter: undefined
       })
+
+      this.$cable.subscribe({
+        channel: 'OrganizationsChannel',
+        room: 'public'
+      });
     },
     methods: {
       onRequest (props) {
@@ -91,7 +96,19 @@
       },
       deleteOrgRecord: function(orgObject) {
         this.$emit('delete-org-event', orgObject);
+      },
+    },
+    channels: {
+      OrganizationsChannel: {
+        connected() {
+          console.log('connected')
+        },
+        rejected() {},
+        received(data) {
+          console.log('channels', data)
+        },
+        disconnected() {}
       }
-    }
+    },
   }
 </script>

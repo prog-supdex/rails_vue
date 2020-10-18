@@ -2,6 +2,8 @@
   "dependencies": {
     "@quasar/extras": "^1.9.7",
     "@rails/webpacker": "5.2.1",
+    "actioncable": "^5.2.4-4",
+    "actioncable-vue": "^2.3.2",
     "axios": "^0.20.0",
     "quasar": "^1.14.0",
     "vue": "^2.6.12",

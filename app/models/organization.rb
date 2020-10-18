@@ -10,6 +10,8 @@ class Organization < ApplicationRecord
 
   validates :name, :org_type, :inn, :ogrn, presence: true
 
+  after_save :broadcast
+
   def self.with_client_ids
     left_joins(:organization_clients)
       .select("#{table_name}.*, array_agg(organization_clients.client_id) AS client_list_id")
@@ -20,5 +22,11 @@ class Organization < ApplicationRecord
     left_joins(:equipments)
       .select("#{table_name}.*, array_agg(equipments.id) AS equipment_list_id")
       .group("#{table_name}.id")
+  end
+
+  private
+
+  def broadcast
+    ActionCable.server.broadcast('items', { items: self })
   end
 end
