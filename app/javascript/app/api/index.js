@@ -93,7 +93,7 @@ const api = {
       index: (params) => axios.get('/staffs/organizations', { params: params }),
       show: (id) => axios.get(`/staffs/organizations/${id}`),
       create: (params) => axios.post('/staffs/organizations', params),
-      update: (id, params) => axios.post(`/staffs/organizations/${id}`, params),
+      update: (id, params) => axios.patch(`/staffs/organizations/${id}`, params),
       delete: (id) => axios.delete(`/staffs/organizations/${id}`)
     },
     clients: {
