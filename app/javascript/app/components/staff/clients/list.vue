@@ -51,7 +51,9 @@
     },
     methods: {
       deleteRecord: function(clientObject) {
-        this.$emit('delete-client-event', clientObject);
+        if (confirm(`Вы уверены, что хотите удалить организацию ${orgObject.name} ?`)) {
+          this.$api.staffs.clients.delete(clientObject.id)
+        }
       },
       showPage: function(id) {
         this.$router.push({ name: 'staff_client_form', params: { id }  })

@@ -77,7 +77,6 @@
       onRequest (props) {
         const { page, sortBy, descending } = props.pagination
         const filter = props.filter
-        console.log(descending)
         this.loading = true
 
         this.$api.staffs.organizations.index({ filter: filter, sort_field: sortBy, page: page, desc: descending })
@@ -95,19 +94,32 @@
         this.$router.push({ name: 'staff_organization_form', params: { id }  })
       },
       deleteOrgRecord: function(orgObject) {
-        this.$emit('delete-org-event', orgObject);
+        if (confirm(`Вы уверены, что хотите удалить организацию ${orgObject.name} ?`)) {
+          this.$api.staffs.organizations.delete(orgObject.id)
+        }
       },
     },
     channels: {
       OrganizationsChannel: {
-        connected() {
-          console.log('connected')
-        },
-        rejected() {},
         received(data) {
-          console.log('channels', data)
-        },
-        disconnected() {}
+          if (data.organization) {
+            for (let i in Object.keys(this.organizations)) {
+              if (this.organizations[i].id == data.organization.id) {
+                if (data.destroyed) {
+                  this.organizations.splice(i, 1);
+                } else {
+                  for (let key in data.organization) {
+                    this.organizations[i][key] = data.organization[key];
+                  }
+                }
+
+                return
+              }
+            }
+
+            this.organizations.push(data.organization)
+          }
+        }
       }
     },
   }
