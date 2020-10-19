@@ -1,4 +1,4 @@
-class OrganizationsChannels < ApplicationCable::Channel
+class OrganizationsChannel < ApplicationCable::Channel
   def subscribed
     stream_from 'organizations'
   end
