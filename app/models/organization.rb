@@ -11,6 +11,7 @@ class Organization < ApplicationRecord
   validates :name, :org_type, :inn, :ogrn, presence: true
 
   after_save :broadcast
+  after_destroy :broadcast
 
   def self.with_client_ids
     left_joins(:organization_clients)
@@ -27,6 +28,6 @@ class Organization < ApplicationRecord
   private
 
   def broadcast
-    ActionCable.server.broadcast('items', { items: self })
+    ActionCable.server.broadcast('organizations', { organization: self, destroyed: destroyed? })
   end
 end
