@@ -1,4 +1,5 @@
 module.exports = {
+  root: true,
   env: {
     browser: true,
     node: true,
@@ -18,5 +19,10 @@ module.exports = {
   ],
   rules: {
     'no-console': 0,
+    'import/extensions': ['error', 'always', {
+      js: 'never',
+      vue: 'never',
+    }],
+    'max-len': [2, { code: 120 }],
   },
 };
