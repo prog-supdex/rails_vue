@@ -1,35 +1,33 @@
-import '../../api/index'
-import Vue from "vue";
+import '../../api/index';
+import Vue from 'vue';
 
 const state = {
-  currentUser: null
+  currentUser: null,
 };
 
 const getters = {
-  currentUser: state => {
-    return state.currentUser
-  }
+  currentUser: (st) => st.currentUser,
 };
 
 const mutations = {
-  SET_CURRENT_USER: (state, userObject) => {
-    state.currentUser = userObject
-    state.userSignedIn = true
-  }
+  SET_CURRENT_USER: (st, userObject) => {
+    // eslint-disable-next-line no-param-reassign
+    st.currentUser = userObject;
+    // eslint-disable-next-line no-param-reassign
+    st.userSignedIn = true;
+  },
 };
 
 const actions = {
-  currentUser: async (context) => {
-    return Vue.prototype.$api.users.current_user()
-      .then(({data}) => {
-        context.commit('SET_CURRENT_USER', data)
-      })
-  },
+  currentUser: async (context) => Vue.prototype.$api.users.current_user()
+    .then(({ data }) => {
+      context.commit('SET_CURRENT_USER', data);
+    }),
 };
 
 export default {
   state,
   getters,
   mutations,
-  actions
-}
+  actions,
+};

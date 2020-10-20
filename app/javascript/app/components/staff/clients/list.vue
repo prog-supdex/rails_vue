@@ -32,63 +32,70 @@
 </template>
 
 <script>
-  export default {
-    name: 'client-list',
-    data: function() {
-      return {
-        pagination: {
-          sortBy: 'created_at',
-          descending: true,
-          page: 1,
-          rowsPerPage: 10,
-          rowsNumber: 0
+export default {
+  name: 'client-list',
+  data() {
+    return {
+      pagination: {
+        sortBy: 'created_at',
+        descending: true,
+        page: 1,
+        rowsPerPage: 10,
+        rowsNumber: 0,
+      },
+      filter: '',
+      clients: [],
+      loading: true,
+      content: 'client-list',
+      columns: [
+        {
+          required: true, label: 'Имя', align: 'left', field: 'name', sortable: true,
         },
-        filter: '',
-        clients: [],
-        loading: true,
-        content: 'client-list',
-        columns: [
-          { required: true, label: 'Имя', align: 'left', field: 'name', sortable: true },
-          { align: 'center', label: 'Email', field: 'email', sortable: true },
-          { label: 'Телефон', field: 'phone', sortable: true, align: 'center' },
-          {
-            name: 'actions',
-            label: 'Actions',
-            field: 'actions'
-          }
-        ]
+        {
+          align: 'center', label: 'Email', field: 'email', sortable: true,
+        },
+        {
+          label: 'Телефон', field: 'phone', sortable: true, align: 'center',
+        },
+        {
+          name: 'actions',
+          label: 'Actions',
+          field: 'actions',
+        },
+      ],
+    };
+  },
+  mounted() {
+    this.onRequest({
+      pagination: this.pagination,
+      filter: undefined,
+    });
+  },
+  methods: {
+    onRequest(props) {
+      this.loading = true;
+      console.log(props);
+      this.$api.staffs.clients.index({ page: props.pagination.page, per_page: props.pagination.rowsPerPage })
+        .then(({ data }) => {
+          this.clients = data.clients;
+          this.loading = false;
+          this.pagination.rowsNumber = data.pagy.count;
+          this.pagination.rowsPerPage = data.pagy.vars.items;
+          this.pagination.page = data.pagy.page;
+        });
+    },
+    deleteRecord(clientObject) {
+      // eslint-disable-next-line no-restricted-globals
+      if (confirm(`Вы уверены, что хотите удалить организацию ${clientObject.name} ?`)) {
+        this.$api.staffs.clients.delete(clientObject.id);
       }
     },
-    mounted () {
-      this.onRequest({
-        pagination: this.pagination,
-        filter: undefined
-      })
+    showPage(id) {
+      this.$router.push({ name: 'staff_client_form', params: { id } });
     },
-    methods: {
-      onRequest (props) {
-        this.loading = true
-        console.log(props)
-        this.$api.staffs.clients.index({ page: props.pagination.page, per_page: props.pagination.rowsPerPage })
-          .then(({data}) => {
-            this.clients = data.clients
-            this.loading = false
-            this.pagination.rowsNumber = data.pagy.count
-            this.pagination.rowsPerPage = data.pagy.vars.items
-            this.pagination.page = data.pagy.page
-          })
-      },
-      deleteRecord: function(clientObject) {
-        if (confirm(`Вы уверены, что хотите удалить организацию ${orgObject.name} ?`)) {
-          this.$api.staffs.clients.delete(clientObject.id)
-        }
-      },
-      showPage: function(id) {
-        this.$router.push({ name: 'staff_client_form', params: { id }  })
-      },
-      resetPassword: function(id) {
-        this.$router.push({ name: 'reset_password_form', params: { id: id, type: 'client' } })
-      }
-    }
-  }
+    resetPassword(id) {
+      this.$router.push({ name: 'reset_password_form', params: { id, type: 'client' } });
+    },
+  },
+};
 </script>

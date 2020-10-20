@@ -1,7 +1,7 @@
-import Vue from 'vue'
-import axios from 'axios'
-import '../quasar/index'
-import { Notify } from 'quasar/dist/quasar.common'
+import Vue from 'vue';
+import axios from 'axios';
+import '../quasar/index';
+import { Notify } from 'quasar/dist/quasar.common';
 
 const DATA_WITH_URLS = [
   {
@@ -26,31 +26,31 @@ const DATA_WITH_URLS = [
   },
   {
     url: 'users/reset_password',
-    template_message: 'Пароль пользователя «__NAME__»" был изменен!'
-  }
-]
+    template_message: 'Пароль пользователя «__NAME__»" был изменен!',
+  },
+];
 
 const METHODS_WITH_TRANSLATE = {
-  'patch': 'обновлен',
-  'delete': 'удален',
-  'post': 'создан'
-}
+  patch: 'обновлен',
+  delete: 'удален',
+  post: 'создан',
+};
 
-axios.interceptors.request.use(req => {
-  req.headers.common['Accept'] = 'application/json';
-  req.headers.common['X-CSRF-Token'] =
-    document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+axios.interceptors.request.use((req) => {
+  req.headers.common.Accept = 'application/json';
+  req.headers.common['X-CSRF-Token'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
   return req;
 });
 
 axios.interceptors.response.use(
-  res => {
-    let matchedObject = false
+  (res) => {
+    let matchedObject = false;
 
-    for (let dataObject of DATA_WITH_URLS) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const dataObject of DATA_WITH_URLS) {
       if (res.config.url.includes(dataObject.url)) {
-        matchedObject = dataObject
+        matchedObject = dataObject;
         break;
       }
     }
@@ -60,44 +60,44 @@ axios.interceptors.response.use(
         return res;
       }
 
-      if (res.data['success']) {
+      if (res.data.success) {
         Notify.create({
           icon: 'done',
           color: 'positive',
           message: matchedObject
             .template_message
             .replace('__NAME__', res.data.object.name)
-            .replace('__ACTION__', METHODS_WITH_TRANSLATE[res.config.method])
+            .replace('__ACTION__', METHODS_WITH_TRANSLATE[res.config.method]),
         });
       } else {
         Notify.create({
           icon: 'done',
           color: 'negative',
-          message: res.data.errors
-        })
+          message: res.data.errors,
+        });
       }
     }
 
     return res;
   },
-  err => {
-    console.log(err)
+  (err) => {
+    console.log(err);
 
     return err;
-  }
+  },
 );
 
 const api = {
   staffs: {
     organizations: {
-      index: (params) => axios.get('/staffs/organizations', { params: params }),
+      index: (params) => axios.get('/staffs/organizations', { params }),
       show: (id) => axios.get(`/staffs/organizations/${id}`),
       create: (params) => axios.post('/staffs/organizations', params),
       update: (id, params) => axios.patch(`/staffs/organizations/${id}`, params),
-      delete: (id) => axios.delete(`/staffs/organizations/${id}`)
+      delete: (id) => axios.delete(`/staffs/organizations/${id}`),
     },
     clients: {
-      index: (params) => axios.get('/staffs/clients', { params: params }),
+      index: (params) => axios.get('/staffs/clients', { params }),
       create: (params) => axios.post('/staffs/clients', params),
       update: (id, params) => axios.patch(`/staffs/clients/${id}`, params),
       show: (id) => axios.get(`/staffs/clients/${id}`),
@@ -111,24 +111,24 @@ const api = {
       exists: (params) => axios.post('/staffs/equipments/exists', params),
       free_equipments: () => axios.get('/staffs/equipments/free_equipments'),
       create: (params) => axios.post('/staffs/equipments', params),
-      update: (id, params) => axios.patch(`/staffs/equipments/${id}`, params)
+      update: (id, params) => axios.patch(`/staffs/equipments/${id}`, params),
     },
     sign_out: () => axios.get('/staffs/sign_out'),
-    sign_in: (params) => axios.post('/staffs/sign_in/', params)
+    sign_in: (params) => axios.post('/staffs/sign_in/', params),
   },
   clients: {
     sign_out: () => axios.get('/clients/sign_out'),
     sign_in: (params) => axios.post('/clients/sign_in/', params),
     organizations: {
       index: () => axios.get('/clients/organizations'),
-    }
+    },
   },
   users: {
     reset_password: (params) => axios.post('/users/reset_password', params),
     reset_password_form: (id, type) => axios.post(`/users/reset_password/${id}/${type}`),
-    current_user: () => axios.get('/users/current_user')
-  }
-}
+    current_user: () => axios.get('/users/current_user'),
+  },
+};
 
-Vue.prototype.$axios = axios
-Vue.prototype.$api = api
+Vue.prototype.$axios = axios;
+Vue.prototype.$api = api;

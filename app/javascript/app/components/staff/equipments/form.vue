@@ -63,102 +63,102 @@
             q-btn(v-close-popup label="Закрыть" color="secondary")
 </template>
 
-
 <script>
-  import { fetchOrganizations } from '../../mixins/fetchOrganizations'
+import fetchOrganizations from '../../mixins/fetchOrganizations';
 
-  export default {
-    name: 'equip-form',
-    mixins: [fetchOrganizations],
-    data() {
-      return {
-        equip: {
-          name: '',
-          equipment_type: '',
-          serial_number: '',
-          organization_id: ''
-        },
-        equipId: '',
-        organizations: [],
-        showDialog: false,
-        options: [ { id: 'primary', name: 'Первичное' }, { id: 'secondary', name: 'Вторичное' } ]
-      }
+export default {
+  name: 'equip-form',
+  mixins: [fetchOrganizations],
+  data() {
+    return {
+      equip: {
+        name: '',
+        equipment_type: '',
+        serial_number: '',
+        organization_id: '',
+      },
+      equipId: '',
+      organizations: [],
+      showDialog: false,
+      options: [{ id: 'primary', name: 'Первичное' }, { id: 'secondary', name: 'Вторичное' }],
+    };
+  },
+  computed: {
+    id() {
+      return this.$route.params.id;
     },
-    computed: {
-      id() {
-        return this.$route.params.id;
-      }
-    },
-    created() {
-      if (this.id && this.id != 'new') {
-        this.$api.staffs.equipments.show(this.id).then(({data}) => {
-          this.equip = Object.assign({}, data);
-          this.equipId = this.id;
-        })
-      }
-      this.showDialog = true;
-    },
-    methods: {
-      checkForm() {
-        this.$refs.name.validate();
-        this.$refs.equipment_type.validate();
-        this.$refs.serial_number.validate();
-
-        if (this.$refs.name.hasError || this.$refs.equipment_type.hasError || this.$refs.serial_number.hasError) {
-          this.formHasError = true
-        } else {
-          this.onSubmit();
-        }
-      },
-      onSubmit() {
-        let params = { equipment: this.equip }
-        let scope = this.$api.staffs.equipments
-        scope = this.equipId ? scope.update(this.equipId, params) : scope.create(params)
-
-        scope
-          .then(({data}) => {
-            if (data.success) {
-              this.onReset();
-              this.showDialog = false;
-              this.$emit('reload-equip-list-event')
-            }
-          })
-      },
-      onReset () {
-        Object.keys(this.equip).forEach((field) => {
-          this[field] = '';
-        });
-
-        this.$refs.name.resetValidation();
-        this.$refs.equipment_type.resetValidation();
-        this.$refs.serial_number.resetValidation();
-      },
-      existsEquipBySerialNumber: function(val) {
-        if (this.equipId) {
-          return true;
-        }
-
-        return new Promise((resolve, _) => {
-          this.$api.staffs.equipments.exists({
-            value: val
-          })
-            .then(({data}) => {
-              resolve(!data || 'Такой серийный номер уже присутствует в базе')
-            })
-        })
-      },
-      deleteRecord: function(equipObject) {
-        if (confirm(`Вы уверены, что хотите удалить оборудование ${equipObject.name} ?`)) {
-          this.$api.staffs.equipments.delete(equipObject.id)
-            .then(_ => {
-              this.showDialog = false
-              this.$emit('reload-equip-list-event');
-            })
-        }
-      },
-      pushToEquipments() {
-        this.$router.push({ name: 'staff_equipments' })
-      }
+  },
+  created() {
+    if (this.id && this.id !== 'new') {
+      this.$api.staffs.equipments.show(this.id).then(({ data }) => {
+        this.equip = { ...data };
+        this.equipId = this.id;
+      });
     }
-  }
+    this.showDialog = true;
+  },
+  methods: {
+    checkForm() {
+      this.$refs.name.validate();
+      this.$refs.equipment_type.validate();
+      this.$refs.serial_number.validate();
+
+      if (this.$refs.name.hasError || this.$refs.equipment_type.hasError || this.$refs.serial_number.hasError) {
+        this.formHasError = true;
+      } else {
+        this.onSubmit();
+      }
+    },
+    onSubmit() {
+      const params = { equipment: this.equip };
+      let scope = this.$api.staffs.equipments;
+      scope = this.equipId ? scope.update(this.equipId, params) : scope.create(params);
+
+      scope
+        .then(({ data }) => {
+          if (data.success) {
+            this.onReset();
+            this.showDialog = false;
+            this.$emit('reload-equip-list-event');
+          }
+        });
+    },
+    onReset() {
+      Object.keys(this.equip).forEach((field) => {
+        this[field] = '';
+      });
+
+      this.$refs.name.resetValidation();
+      this.$refs.equipment_type.resetValidation();
+      this.$refs.serial_number.resetValidation();
+    },
+    existsEquipBySerialNumber(val) {
+      if (this.equipId) {
+        return true;
+      }
+
+      return new Promise((resolve) => {
+        this.$api.staffs.equipments.exists({
+          value: val,
+        })
+          .then(({ data }) => {
+            resolve(!data || 'Такой серийный номер уже присутствует в базе');
+          });
+      });
+    },
+    deleteRecord(equipObject) {
+      // eslint-disable-next-line no-restricted-globals
+      if (confirm(`Вы уверены, что хотите удалить оборудование ${equipObject.name} ?`)) {
+        this.$api.staffs.equipments.delete(equipObject.id)
+          .then(() => {
+            this.showDialog = false;
+            this.$emit('reload-equip-list-event');
+          });
+      }
+    },
+    pushToEquipments() {
+      this.$router.push({ name: 'staff_equipments' });
+    },
+  },
+};
 </script>

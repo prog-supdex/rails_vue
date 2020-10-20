@@ -1,6 +1,6 @@
-export const fetchClients = {
+export default {
   data() {
-    this.loading = true
+    this.loading = true;
   },
   created() {
     this.fetchClients();
@@ -8,10 +8,10 @@ export const fetchClients = {
   methods: {
     fetchClients() {
       this.$api.staffs.clients.index()
-        .then(({data}) => {
-          this.clients = data
-          this.loading = false
-        })
-    }
-  }
-}
+        .then(({ data }) => {
+          this.clients = data;
+          this.loading = false;
+        });
+    },
+  },
+};

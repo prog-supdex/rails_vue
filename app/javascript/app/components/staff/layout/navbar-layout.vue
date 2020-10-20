@@ -25,20 +25,20 @@
 </template>
 
 <script>
-  export default {
-    name: 'NavbarLayout',
-    computed: {
-      currentUser () {
-        return this.$store.getters.currentUser
-      }
+export default {
+  name: 'NavbarLayout',
+  computed: {
+    currentUser() {
+      return this.$store.getters.currentUser;
     },
-    methods: {
-      signOut() {
-        this.$api.staffs.sign_out().then(_ => {
-          this.$store.commit('SET_CURRENT_USER', null)
-          this.$router.push({ name: 'staffs_sign_in' })
-        })
-      }
-    }
-  }
+  },
+  methods: {
+    signOut() {
+      this.$api.staffs.sign_out().then(() => {
+        this.$store.commit('SET_CURRENT_USER', null);
+        this.$router.push({ name: 'staffs_sign_in' });
+      });
+    },
+  },
+};
 </script>

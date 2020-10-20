@@ -19,15 +19,15 @@
 </template>
 
 <script>
-  import NavbarLayout from './navbar-layout'
+import NavbarLayout from './navbar-layout.vue';
 
-  export default {
-    name: 'layout',
-    components: {
-      'navbar-layout': NavbarLayout
-    },
-    data() {
-      return {}
-    },
-  }
+export default {
+  name: 'layout',
+  components: {
+    'navbar-layout': NavbarLayout,
+  },
+  data() {
+    return {};
+  },
+};
 </script>
