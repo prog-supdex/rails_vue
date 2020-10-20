@@ -5,15 +5,8 @@ import user from './modules/user';
 
 Vue.use(Vuex)
 
+//TODO реализовать модуль организации
 export default new Vuex.Store({
-  state: {
-    message: 'New Message Vuex Store'
-  },
-  mutations: {
-    CHANGE_MESSAGE: (state, payload) => {
-      state.message = payload
-    }
-  },
   modules: {
     user,
   },

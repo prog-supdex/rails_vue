@@ -2,8 +2,7 @@ import '../../api/index'
 import Vue from "vue";
 
 const state = {
-  currentUser: null,
-  userSignedIn: null
+  currentUser: null
 };
 
 const getters = {
@@ -20,7 +19,7 @@ const mutations = {
 };
 
 const actions = {
-  currentUser: async (context, payload) => {
+  currentUser: async (context) => {
     return Vue.prototype.$api.users.current_user()
       .then(({data}) => {
         context.commit('SET_CURRENT_USER', data)
