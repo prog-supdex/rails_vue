@@ -1,6 +1,11 @@
 class Client < ApplicationRecord
   include DeviseModules
 
+  enum locale: {
+    en: 'en',
+    ru: 'ru'
+  }
+
   has_many :organization_clients, dependent: :destroy
   has_many :organizations, through: :organization_clients
 
