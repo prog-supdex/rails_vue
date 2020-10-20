@@ -1,7 +1,7 @@
 <template lang="pug">
   div.q-pa-md
     q-table(
-      title="Организации"
+      :title="$t('common.organizations')"
       :data="organizations"
       :columns="columns"
       :pagination.sync="pagination"
@@ -22,8 +22,8 @@
 
       template(v-slot:body-cell-actions="props")
         q-td(:props="props")
-          q-btn(color="blue" label="Редактировать" @click="showPage(props.row.id)" size=sm no-caps)
-          q-btn(color="red" label="Удалить"  @click="deleteOrgRecord(props.row)" size=sm no-caps)
+          q-btn(color="blue" :label="$t('common.edit')" @click="showPage(props.row.id)" size=sm no-caps)
+          q-btn(color="red" :label="$t('common.delete')"  @click="deleteOrgRecord(props.row)" size=sm no-caps)
       template(v-slot:loading)
         q-inner-loading(showing)
           q-spinner-cube(color="orange" size="5.5em")

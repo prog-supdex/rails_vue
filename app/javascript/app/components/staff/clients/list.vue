@@ -1,7 +1,7 @@
 <template lang="pug">
   div.q-pa-md
     q-table(
-      title="Клиенты"
+      :title="$t('common.clients')"
       :data="clients"
       :columns="columns"
       :pagination.sync="pagination"
@@ -19,9 +19,9 @@
 
       template(v-slot:body-cell-actions="props")
         q-td(:props="props")
-          q-btn(color="blue" label="Редактировать" @click="showPage(props.row.id)" size=sm no-caps)
+          q-btn(color="blue" :label="$t('common.edit')" @click="showPage(props.row.id)" size=sm no-caps)
           q-btn(color="yellow" label="Сбросить пароль" @click="resetPassword(props.row.id)" size=sm no-caps)
-          q-btn(color="red" label="Удалить"  @click="deleteRecord(props.row)" size=sm no-caps)
+          q-btn(color="red" :label="$t('common.delete')"  @click="deleteRecord(props.row)" size=sm no-caps)
       template(v-slot:loading)
         q-inner-loading(showing)
           q-spinner-cube(color="orange" size="5.5em")
@@ -74,7 +74,6 @@ export default {
   methods: {
     onRequest(props) {
       this.loading = true;
-      console.log(props);
       this.$api.staffs.clients.index({ page: props.pagination.page, per_page: props.pagination.rowsPerPage })
         .then(({ data }) => {
           this.clients = data.clients;

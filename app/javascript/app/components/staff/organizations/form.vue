@@ -79,10 +79,10 @@
           )
           br
           div
-            q-btn(:label="orgId ? 'Обновить' : 'Создать'" type="submit" color="primary")
+            q-btn(:label="orgId ? $t('common.update') : $t('common.create')" type="submit" color="primary")
             q-btn.q-ml-sm(v-if="orgId == ''" label="Сбросить" type="reset" color="primary" flat)
-            q-btn.q-ml-sm(v-else label="Удалить" @click="deleteRecord(organization)" color="primary" flat)
-            q-btn(v-close-popup label="Закрыть" color="secondary")
+            q-btn.q-ml-sm(v-else :label="$t('common.delete')" @click="deleteRecord(organization)" color="primary" flat)
+            q-btn(v-close-popup :label="$t('common.close')" color="secondary")
 </template>
 
 <script>

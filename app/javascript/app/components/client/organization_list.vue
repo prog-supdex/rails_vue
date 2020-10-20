@@ -1,7 +1,7 @@
 <template lang="pug">
   div.q-pa-md
     q-table(
-      title="Организации"
+      :title="$t('common.organizations')"
       :data="organizations"
       :columns="columns"
       row-key="name"

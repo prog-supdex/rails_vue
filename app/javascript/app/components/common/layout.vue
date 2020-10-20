@@ -6,7 +6,7 @@
           color="secondary"
           type="a"
           :href="$router.resolve({name: 'client_organizations'}).href"
-          label="Клиенты"
+          :label="$t('client.linkName')"
           size="22px"
         )
 
@@ -14,7 +14,7 @@
           color="secondary"
           type="a"
           :href="$router.resolve({name: 'staff_organizations'}).href"
-          label="Сотрудники"
+          :label="$t('staff.linkName')"
           size="22px"
         )
 </template>

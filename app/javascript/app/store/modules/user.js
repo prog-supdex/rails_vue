@@ -1,6 +1,7 @@
 import '../../api/index';
 import Vue from 'vue';
 
+// TODO реализовать нормальную авторизацию через JWT + его проверку
 const state = {
   currentUser: null,
 };

@@ -5,7 +5,7 @@
         q-toolbar-title
           q-avatar
             img(src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg")
-          | Приложение Сотрудника
+          | {{ $t("staff.appName") }}
       navbar-layout
 
     q-page-container
@@ -28,6 +28,9 @@ export default {
   },
   data() {
     return {};
+  },
+  created() {
+    this.$i18n.locale = this.$store.getters.currentUser.locale;
   },
 };
 </script>

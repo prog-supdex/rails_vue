@@ -46,6 +46,17 @@
             label="Организации"
           )
           br
+          q-select(
+            filled
+            v-model="client.locale"
+            :options="locales"
+            stack-label
+            emit-value
+            option-value="id"
+            option-label="name"
+            label="Выберите язык"
+          )
+          br
           q-input(
             ref="phone"
             v-model="client.phone"
@@ -77,11 +88,11 @@
           )
           br
           div
-            q-btn(:label="clientId ? 'Обновить' : 'Создать'" type="submit" color="primary")
+            q-btn(:label="clientId ? $t('common.update') : $t('common.create')" type="submit" color="primary")
             q-btn.q-ml-sm(v-if="clientId == ''" label="Сбросить" type="reset" color="primary" flat)
-            q-btn.q-ml-sm(v-else label="Удалить" @click="deleteRecord(client)" color="primary" flat)
+            q-btn.q-ml-sm(v-else :label="$t('common.delete')" @click="deleteRecord(client)" color="primary" flat)
             q-btn.q-ml-sm(label="Сбросить пароль" @click="reset_password_form(client)" color="primary" flat)
-            q-btn(v-close-popup label="Закрыть" color="secondary")
+            q-btn(v-close-popup :label="$t('common.close')" color="secondary")
 </template>
 
 <script>
@@ -98,10 +109,12 @@ export default {
         name: '',
         phone: '',
         organization_list_id: [],
+        locale: '',
       },
       clientId: '',
       organizations: [],
       showDialog: false,
+      locales: [{ id: 'ru', name: 'Русский' }, { id: 'en', name: 'Английский' }],
     };
   },
   computed: {
