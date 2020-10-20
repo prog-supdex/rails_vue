@@ -1,7 +1,7 @@
 <template lang="pug">
   q-card(style="width: 750px; max-width: 85vw;")
     h5.q-pa-lg Авторизация сотрудника
-    q-form(@submit="onSubmit" class="justify-center q-pa-lg")
+    q-form.justify-center.q-pa-lg(@submit="onSubmit")
       q-input(
         ref="email"
         v-model="staff.email"
@@ -49,7 +49,8 @@
        })
          .then(({data}) => {
            if (data['success']) {
-             this.$router.push({ name: 'staff_organizations'  })
+             this.$store.dispatch('currentUser')
+               .finally(() => this.$router.push({name: 'staff_organizations'}))
            }
          })
      },

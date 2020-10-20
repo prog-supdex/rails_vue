@@ -2,7 +2,7 @@
   div
     q-dialog(v-model="showDialog" title="Создание клиента" persistent @hide="pushToClients")
       q-card(style="width: 750px; max-width: 85vw;")
-        q-form(class="justify-center q-pa-lg" @submit="checkForm" @reset.prevent.stop="onReset")
+        q-form.justify-center.q-pa-lg(@submit="checkForm" @reset.prevent.stop="onReset")
           q-input(
             ref="name"
             v-model="client.name"
@@ -78,9 +78,9 @@
           br
           div
             q-btn(:label="clientId ? 'Обновить' : 'Создать'" type="submit" color="primary")
-            q-btn(v-if="clientId == ''" label="Сбросить" type="reset" color="primary" flat class="q-ml-sm")
-            q-btn(v-else label="Удалить" @click="deleteRecord(client)" color="primary" flat class="q-ml-sm")
-            q-btn(label="Сбросить пароль" @click="reset_password_form(client)" color="primary" flat class="q-ml-sm")
+            q-btn.q-ml-sm(v-if="clientId == ''" label="Сбросить" type="reset" color="primary" flat)
+            q-btn.q-ml-sm(v-else label="Удалить" @click="deleteRecord(client)" color="primary" flat)
+            q-btn.q-ml-sm(label="Сбросить пароль" @click="reset_password_form(client)" color="primary" flat)
             q-btn(v-close-popup label="Закрыть" color="secondary")
 </template>
 

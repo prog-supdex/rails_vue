@@ -2,12 +2,16 @@
   "dependencies": {
     "@quasar/extras": "^1.9.7",
     "@rails/webpacker": "5.2.1",
+    "actioncable": "^5.2.4-4",
+    "actioncable-vue": "^2.3.2",
     "axios": "^0.20.0",
     "quasar": "^1.14.0",
     "vue": "^2.6.12",
     "vue-loader": "^15.9.3",
     "vue-router": "^3.4.5",
-    "vue-template-compiler": "^2.6.12"
+    "vue-template-compiler": "^2.6.12",
+    "vuex": "^3.5.1",
+    "vuex-persistedstate": "^4.0.0-beta.1"
   },
   "devDependencies": {
     "pug": "^3.0.0",

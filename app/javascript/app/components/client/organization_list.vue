@@ -1,5 +1,5 @@
 <template lang="pug">
-  div(class="q-pa-md")
+  div.q-pa-md
     q-table(
       title="Организации"
       :data="organizations"

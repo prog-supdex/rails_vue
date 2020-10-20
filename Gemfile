@@ -23,6 +23,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'bootsnap', '>= 1.4.2', require: false
 
 gem 'devise'
+gem 'pagy', '~> 3.8', '>= 3.8.3'
 gem 'webpacker', '~> 5.x'
 
 group :development, :test do

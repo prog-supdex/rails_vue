@@ -1,20 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Приложение</title>
+    <title>Выберите приложение</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
   </head>
 
   <body>
-    <div id="app">
-      <%= yield %>
-    </div>
+    <div id="app"></div>
   </body>
 
-  <% if current_staff.present? %>
-    <%= javascript_pack_tag 'staff' %>
-  <% elsif current_client.present? %>
-    <%= javascript_pack_tag 'client' %>
-  <% end %>
+  <%= javascript_pack_tag 'common' %>
 </html>

@@ -1,10 +1,10 @@
 <template lang="pug">
   q-card(style="width: 750px; max-width: 85vw;")
-    h5.q-pa-lg Авторизация сотрудника
-    q-form(@submit="onSubmit" class="justify-center q-pa-lg")
+    h5.q-pa-lg Авторизация клиента
+    q-form.justify-center.q-pa-lg(@submit="onSubmit")
       q-input(
         ref="email"
-        v-model="staff.email"
+        v-model="client.email"
         label="Emai"
         filled
         placeholder="Email"
@@ -16,7 +16,7 @@
       br
       q-input(
         ref="password"
-        v-model="staff.password"
+        v-model="client.password"
         label="Пароль"
         filled
         placeholder="Пароль"
@@ -45,11 +45,15 @@
    methods: {
      onSubmit() {
        this.$api.clients.sign_in({
-         staff: this.staff
+         client: this.client
        })
          .then(({data}) => {
            if (data['success']) {
-             this.$router.push({ name: 'client_organizations' })
+             this.$store.dispatch('currentUser')
+               .finally(() => (
+                   this.$router.push({ name: 'client_organizations' })
+                 )
+               )
            }
          })
      },

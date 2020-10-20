@@ -2,7 +2,7 @@
   div
     q-dialog(v-model="showDialog" title="Создание оборудования" persistent @hide="pushToEquipments")
       q-card(style="width: 750px; max-width: 85vw;")
-        q-form(class="justify-center q-pa-lg" @submit="checkForm" @reset.prevent.stop="onReset")
+        q-form.justify-center.q-pa-lg(@submit="checkForm" @reset.prevent.stop="onReset")
           q-input(
             ref="name"
             v-model="equip.name"
@@ -58,8 +58,8 @@
           br
           div
             q-btn(:label="equipId ? 'Обновить' : 'Создать'" type="submit" color="primary")
-            q-btn(v-if="equipId == ''" label="Сбросить" type="reset" color="primary" flat class="q-ml-sm")
-            q-btn(v-else label="Удалить" @click="deleteRecord(equip)" color="primary" flat class="q-ml-sm")
+            q-btn.q-ml-sm(v-if="equipId == ''" label="Сбросить" type="reset" color="primary" flat)
+            q-btn.q-ml-sm(v-else label="Удалить" @click="deleteRecord(equip)" color="primary" flat)
             q-btn(v-close-popup label="Закрыть" color="secondary")
 </template>
 
