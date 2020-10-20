@@ -2,7 +2,7 @@
   div
     q-dialog(v-model="showDialog" title="Сбросить пароль" persistent @hide="pushToClients")
       q-card(style="width: 750px; max-width: 85vw;")
-        q-form(class="justify-center q-pa-lg" @submit="checkForm" @reset.prevent.stop="onReset")
+        q-form.justify-center.q-pa-lg(@submit="checkForm" @reset.prevent.stop="onReset")
           q-input(
             ref="password"
             v-model="data.password"
@@ -16,7 +16,7 @@
             ]"
           )
             template(v-slot:append)
-              q-icon(:name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd")
+              q-icon.cursor-pointer(:name="isPwd ? 'visibility_off' : 'visibility'" @click="isPwd = !isPwd")
 
           br
           q-input(
@@ -32,7 +32,7 @@
             ]"
           )
             template(v-slot:append)
-              q-icon(:name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd")
+              q-icon.cursor-pointer(:name="isPwd ? 'visibility_off' : 'visibility'" @click="isPwd = !isPwd")
           br
 
           div

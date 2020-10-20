@@ -1,16 +1,18 @@
 <template lang="pug">
-  div(class="q-pa-md")
+  div.q-pa-md
     q-table(
       title="Клиенты"
       :data="clients"
       :columns="columns"
+      :pagination.sync="pagination"
       row-key="name"
       dark
       color="amber",
       :loading="loading"
       binary-state-sort
+      @request="onRequest"
       class="relative-position"
-      v-on:reload-client-list-event="fetchClients"
+      v-on:reload-client-list-event="onRequest"
     )
       template(v-slot:top)
         q-btn(dense color="secondary" label="Создать клиента" @click="showPage('new')" no-caps)
@@ -23,17 +25,25 @@
       template(v-slot:loading)
         q-inner-loading(showing)
           q-spinner-cube(color="orange" size="5.5em")
+      template(v-slot:no-data)
+        q-icon.text-red(name="warning" style="font-size: 2rem;")
+        span Ничего не найдено
     router-view
 </template>
 
 <script>
-  import { fetchClients } from '../../mixins/fetchClients'
-
   export default {
     name: 'client-list',
-    mixins: [fetchClients],
     data: function() {
       return {
+        pagination: {
+          sortBy: 'created_at',
+          descending: true,
+          page: 1,
+          rowsPerPage: 10,
+          rowsNumber: 0
+        },
+        filter: '',
         clients: [],
         loading: true,
         content: 'client-list',
@@ -49,7 +59,25 @@
         ]
       }
     },
+    mounted () {
+      this.onRequest({
+        pagination: this.pagination,
+        filter: undefined
+      })
+    },
     methods: {
+      onRequest (props) {
+        this.loading = true
+        console.log(props)
+        this.$api.staffs.clients.index({ page: props.pagination.page, per_page: props.pagination.rowsPerPage })
+          .then(({data}) => {
+            this.clients = data.clients
+            this.loading = false
+            this.pagination.rowsNumber = data.pagy.count
+            this.pagination.rowsPerPage = data.pagy.vars.items
+            this.pagination.page = data.pagy.page
+          })
+      },
       deleteRecord: function(clientObject) {
         if (confirm(`Вы уверены, что хотите удалить организацию ${orgObject.name} ?`)) {
           this.$api.staffs.clients.delete(clientObject.id)

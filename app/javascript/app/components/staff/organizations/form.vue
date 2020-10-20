@@ -2,7 +2,7 @@
   div
     q-dialog(v-model="showDialog" title="Создание организации" persistent @hide="pushToOrganizations")
       q-card(style="width: 750px; max-width: 85vw;")
-        q-form(class="justify-center q-pa-lg" @submit="checkForm" @reset.prevent.stop="onReset")
+        q-form.justify-center.q-pa-lg(@submit="checkForm" @reset.prevent.stop="onReset")
           q-input(
             ref="name"
             v-model="organization.name"
@@ -80,8 +80,8 @@
           br
           div
             q-btn(:label="orgId ? 'Обновить' : 'Создать'" type="submit" color="primary")
-            q-btn(v-if="orgId == ''" label="Сбросить" type="reset" color="primary" flat class="q-ml-sm")
-            q-btn(v-else label="Удалить" @click="deleteRecord(organization)" color="primary" flat class="q-ml-sm")
+            q-btn.q-ml-sm(v-if="orgId == ''" label="Сбросить" type="reset" color="primary" flat)
+            q-btn.q-ml-sm(v-else label="Удалить" @click="deleteRecord(organization)" color="primary" flat)
             q-btn(v-close-popup label="Закрыть" color="secondary")
 </template>
 

@@ -1,5 +1,5 @@
 <template lang="pug">
-  div(class="q-pa-md")
+  div.q-pa-md
     q-table(
       title="Организации"
       :data="organizations"
@@ -28,7 +28,7 @@
         q-inner-loading(showing)
           q-spinner-cube(color="orange" size="5.5em")
       template(v-slot:no-data)
-        q-icon(name="warning" class="text-red" style="font-size: 2rem;")
+        q-icon.text-red(name="warning" style="font-size: 2rem;")
         span Ничего не найдено
 
     router-view
@@ -75,11 +75,11 @@
     },
     methods: {
       onRequest (props) {
-        const { page, sortBy, descending } = props.pagination
+        const { page, sortBy, descending, rowsPerPage } = props.pagination
         const filter = props.filter
         this.loading = true
 
-        this.$api.staffs.organizations.index({ filter: filter, sort_field: sortBy, page: page, desc: descending })
+        this.$api.staffs.organizations.index({ filter: filter, sort_field: sortBy, page: page, desc: descending, per_page: rowsPerPage })
           .then(({data}) => {
             this.organizations = data.organizations
             this.loading = false

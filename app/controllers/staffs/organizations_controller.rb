@@ -3,10 +3,8 @@ class Staffs::OrganizationsController < Staffs::ApplicationController
 
   before_action :find_organization, only: %i[update destroy]
 
-  #before_action :authenticate_user!
-
   def index
-    @pagy, @records = pagy(OrganizationsFinderQuery.call(params: params), items: 10)
+    @pagy, @records = pagy(OrganizationsFinderQuery.call(params: params), items: params[:per_page] || 10)
 
     render json: { organizations: @records, pagy: pagy_metadata(@pagy), sort: { field: params[:sort_field], desc: params[:desc] } }
   end
