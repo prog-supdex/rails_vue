@@ -46,6 +46,17 @@
             label="Организации"
           )
           br
+          q-select(
+            filled
+            v-model="client.locale"
+            :options="locales"
+            stack-label
+            emit-value
+            option-value="id"
+            option-label="name"
+            label="Выберите язык"
+          )
+          br
           q-input(
             ref="phone"
             v-model="client.phone"
@@ -77,146 +88,152 @@
           )
           br
           div
-            q-btn(:label="clientId ? 'Обновить' : 'Создать'" type="submit" color="primary")
+            q-btn(:label="clientId ? $t('common.update') : $t('common.create')" type="submit" color="primary")
             q-btn.q-ml-sm(v-if="clientId == ''" label="Сбросить" type="reset" color="primary" flat)
-            q-btn.q-ml-sm(v-else label="Удалить" @click="deleteRecord(client)" color="primary" flat)
+            q-btn.q-ml-sm(v-else :label="$t('common.delete')" @click="deleteRecord(client)" color="primary" flat)
             q-btn.q-ml-sm(label="Сбросить пароль" @click="reset_password_form(client)" color="primary" flat)
-            q-btn(v-close-popup label="Закрыть" color="secondary")
+            q-btn(v-close-popup :label="$t('common.close')" color="secondary")
 </template>
 
-
 <script>
-  import { fetchOrganizations } from '../../mixins/fetchOrganizations'
+import fetchOrganizations from '../../mixins/fetchOrganizations';
 
-  export default {
-    name: 'client-form',
-    mixins: [fetchOrganizations],
-    data() {
-      return {
-        client: {
-          email: '',
-          password: '',
-          name: '',
-          phone: '',
-          organization_list_id: []
-        },
-        clientId: '',
-        organizations: [],
-        showDialog: false,
-      }
+export default {
+  name: 'client-form',
+  mixins: [fetchOrganizations],
+  data() {
+    return {
+      client: {
+        email: '',
+        password: '',
+        name: '',
+        phone: '',
+        organization_list_id: [],
+        locale: '',
+      },
+      clientId: '',
+      organizations: [],
+      showDialog: false,
+      locales: [{ id: 'ru', name: 'Русский' }, { id: 'en', name: 'Английский' }],
+    };
+  },
+  computed: {
+    id() {
+      return this.$route.params.id;
     },
-    computed: {
-      id() {
-        return this.$route.params.id;
-      }
-    },
-    created() {
-      if (this.id && this.id != 'new') {
-        this.$api.staffs.clients.show(this.id).then(({data}) => {
-          this.client = Object.assign({}, data);
-          this.clientId = this.id;
-        })
-      }
-      this.showDialog = true;
-    },
-    methods: {
-      checkForm() {
-        this.$refs.email.validate();
-        this.$refs.name.validate();
-        this.$refs.phone.validate();
-
-        var passwordError = null
-
-        if (!this.clientId) {
-          passwordError =this.$refs.password.hasError
-          this.$refs.password.validate();
-        }
-
-        if (this.$refs.email.hasError || passwordError || this.$refs.phone.hasError || this.$refs.name.hasError) {
-          this.formHasError = true
-        } else {
-          this.onSubmit();
-        }
-      },
-      emailCheck: function(val) {
-        const emailCheck = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        return emailCheck.test(val) || 'Неверный формат'
-      },
-      phoneCheck: function(val) {
-        return !(/^\d+$/.test(this.phone)) || 'Неверный формат'
-      },
-      onSubmit() {
-        let params = { client: this.client }
-        let scope = this.$api.staffs.clients
-        scope = this.clientId ? scope.update(this.clientId, params) : scope.create(params)
-
-        scope.then(({data}) => {
-          if (data.success) {
-            this.onReset();
-            this.showDialog = false;
-            this.$emit('reload-client-list-event')
-          }
-        })
-      },
-      onReset () {
-        this.name = '';
-        this.email = '';
-        this.password = '';
-        this.phone = '';
-
-        this.$refs.name.resetValidation();
-        this.$refs.email.resetValidation();
-
-        if (!this.clientId) {
-          this.$refs.password.resetValidation();
-        }
-
-        this.$refs.phone.resetValidation();
-      },
-      existsClientByPhone: function(val) {
-        if (this.clientId) {
-          return true;
-        }
-
-        return this.existsClientByField('phone', val);
-      },
-      existsClientByEmail: function(val) {
-        if (this.clientId) {
-          return true;
-        }
-
-        return this.existsClientByField('email', val);
-      },
-      existsClientByField: function(field, value) {
-        return new Promise((resolve, _) => {
-          this.$api.staffs.clients.exists({
-            field: field,
-            value: value
-          })
-            .then(({data}) => {
-              if (field == 'phone') {
-                resolve(!data || 'Такой телефон уже присутствует в базе')
-              } else {
-                resolve(!data || 'Такой email уже присутствует в базе')
-              }
-          })
-        })
-      },
-      deleteRecord: function(clientObject) {
-        if (confirm(`Вы уверены, что хотите удалить клиента ${clientObject.name} ?`)) {
-          this.$api.staffs.clients.delete(clientObject.id)
-            .then(_ => {
-              this.showDialog = false
-              this.$emit('reload-client-list-event');
-            })
-        }
-      },
-      resetPasswordForm: function(id) {
-        this.$router.push({ name: 'staff_clients', params: { id: id, type: 'clients' } })
-      },
-      pushToClients() {
-        this.$router.push({ name: 'staff_clients' })
-      }
+  },
+  created() {
+    if (this.id && this.id !== 'new') {
+      this.$api.staffs.clients.show(this.id).then(({ data }) => {
+        this.client = { ...data };
+        this.clientId = this.id;
+      });
     }
-  }
+    this.showDialog = true;
+  },
+  methods: {
+    checkForm() {
+      this.$refs.email.validate();
+      this.$refs.name.validate();
+      this.$refs.phone.validate();
+
+      let passwordError = null;
+
+      if (!this.clientId) {
+        passwordError = this.$refs.password.hasError;
+        this.$refs.password.validate();
+      }
+
+      if (this.$refs.email.hasError
+          || passwordError
+          || this.$refs.phone.hasError
+          || this.$refs.name.hasError) {
+        this.formHasError = true;
+      } else {
+        this.onSubmit();
+      }
+    },
+    emailCheck(val) {
+      // eslint-disable-next-line max-len
+      const emailCheck = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+      return emailCheck.test(val) || 'Неверный формат';
+    },
+    phoneCheck(val) {
+      return (/^\d+$/.test(val)) || 'Неверный формат';
+    },
+    onSubmit() {
+      const params = { client: this.client };
+      let scope = this.$api.staffs.clients;
+      scope = this.clientId ? scope.update(this.clientId, params) : scope.create(params);
+
+      scope.then(({ data }) => {
+        if (data.success) {
+          this.onReset();
+          this.showDialog = false;
+          this.$emit('reload-client-list-event');
+        }
+      });
+    },
+    onReset() {
+      this.name = '';
+      this.email = '';
+      this.password = '';
+      this.phone = '';
+
+      this.$refs.name.resetValidation();
+      this.$refs.email.resetValidation();
+
+      if (!this.clientId) {
+        this.$refs.password.resetValidation();
+      }
+
+      this.$refs.phone.resetValidation();
+    },
+    existsClientByPhone(val) {
+      if (this.clientId) {
+        return true;
+      }
+
+      return this.existsClientByField('phone', val);
+    },
+    existsClientByEmail(val) {
+      if (this.clientId) {
+        return true;
+      }
+
+      return this.existsClientByField('email', val);
+    },
+    existsClientByField(field, value) {
+      return new Promise((resolve) => {
+        this.$api.staffs.clients.exists({
+          field,
+          value,
+        })
+          .then(({ data }) => {
+            if (field === 'phone') {
+              resolve(!data || 'Такой телефон уже присутствует в базе');
+            } else {
+              resolve(!data || 'Такой email уже присутствует в базе');
+            }
+          });
+      });
+    },
+    deleteRecord(clientObject) {
+      // eslint-disable-next-line no-restricted-globals
+      if (confirm(`Вы уверены, что хотите удалить клиента ${clientObject.name} ?`)) {
+        this.$api.staffs.clients.delete(clientObject.id)
+          .then(() => {
+            this.showDialog = false;
+            this.$emit('reload-client-list-event');
+          });
+      }
+    },
+    resetPasswordForm(id) {
+      this.$router.push({ name: 'staff_clients', params: { id, type: 'clients' } });
+    },
+    pushToClients() {
+      this.$router.push({ name: 'staff_clients' });
+    },
+  },
+};
 </script>

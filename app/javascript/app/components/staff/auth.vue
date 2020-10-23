@@ -32,28 +32,28 @@
 
 <script>
 
- export default {
-   name: 'auth',
-   data() {
-     return {
-       staff: {
-         email: '',
-         password: ''
-       }
-     }
-   },
-   methods: {
-     onSubmit() {
-       this.$api.staffs.sign_in({
-         staff: this.staff
-       })
-         .then(({data}) => {
-           if (data['success']) {
-             this.$store.dispatch('currentUser')
-               .finally(() => this.$router.push({name: 'staff_organizations'}))
-           }
-         })
-     },
-   }
- }
+export default {
+  name: 'auth',
+  data() {
+    return {
+      staff: {
+        email: '',
+        password: '',
+      },
+    };
+  },
+  methods: {
+    onSubmit() {
+      this.$api.staffs.sign_in({
+        staff: this.staff,
+      })
+        .then(({ data }) => {
+          if (data.success) {
+            this.$store.dispatch('currentUser')
+              .finally(() => this.$router.push({ name: 'staff_organizations' }));
+          }
+        });
+    },
+  },
+};
 </script>

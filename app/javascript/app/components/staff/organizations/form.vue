@@ -79,103 +79,106 @@
           )
           br
           div
-            q-btn(:label="orgId ? 'Обновить' : 'Создать'" type="submit" color="primary")
+            q-btn(:label="orgId ? $t('common.update') : $t('common.create')" type="submit" color="primary")
             q-btn.q-ml-sm(v-if="orgId == ''" label="Сбросить" type="reset" color="primary" flat)
-            q-btn.q-ml-sm(v-else label="Удалить" @click="deleteRecord(organization)" color="primary" flat)
-            q-btn(v-close-popup label="Закрыть" color="secondary")
+            q-btn.q-ml-sm(v-else :label="$t('common.delete')" @click="deleteRecord(organization)" color="primary" flat)
+            q-btn(v-close-popup :label="$t('common.close')" color="secondary")
 </template>
 
-
 <script>
-  import { fetchClients } from '../../mixins/fetchClients'
+import fetchClients from '../../mixins/fetchClients';
 
-  export default {
-    name: 'organization-form',
-    mixins: [fetchClients],
-    data() {
-      return {
-        organization: {
-          name: '',
-          org_type: '',
-          inn: '',
-          ogrn: '',
-          client_list_id: [],
-          equipment_list_id: []
-        },
-        clients: [],
-        equipments: [],
-        orgId: '',
-        showDialog: false,
-        options: [ { id: 'individual', name: 'ИП' }, { id: 'juridical', name: 'Юр. Лицо' } ]
-      }
+export default {
+  name: 'organization-form',
+  mixins: [fetchClients],
+  data() {
+    return {
+      organization: {
+        name: '',
+        org_type: '',
+        inn: '',
+        ogrn: '',
+        client_list_id: [],
+        equipment_list_id: [],
+      },
+      clients: [],
+      equipments: [],
+      orgId: '',
+      showDialog: false,
+      options: [{ id: 'individual', name: 'ИП' }, { id: 'juridical', name: 'Юр. Лицо' }],
+    };
+  },
+  computed: {
+    id() {
+      return this.$route.params.id;
     },
-    computed: {
-      id() {
-        return this.$route.params.id;
-      }
-    },
-    created() {
-      if (this.id && this.id != 'new') {
-        this.$api.staffs.organizations.show(this.id).then(({data}) => {
-          this.organization = Object.assign({}, data);
-          this.orgId = this.id;
-        })
-      }
-      this.showDialog = true;
-      this.$api.staffs.equipments.free_equipments().then(({data}) => {
-        this.equipments = data;
-      })
-    },
-    methods: {
-      checkForm: function (e) {
-        this.$refs.name.validate()
-        this.$refs.inn.validate()
-        this.$refs.ogrn.validate()
-        this.$refs.org_type.validate()
-
-        if (this.$refs.name.hasError || this.$refs.inn.hasError || this.$refs.ogrn.hasError || this.$refs.org_type.hasError) {
-          this.formHasError = true
-        } else {
-          this.onSubmit();
-        }
-      },
-      onSubmit: function () {
-        let params = { organization: this.organization }
-        let scope = this.$api.staffs.organizations
-        scope = this.orgId ? scope.update(this.orgId, params) : scope.create(params)
-
-        scope
-          .then(({data}) => {
-            if (data.success) {
-              this.onReset();
-              this.showDialog = false;
-              this.$emit('reload-org-list-event');
-            }
-          })
-      },
-      onReset () {
-        this.organization.name = ''
-        this.organization.org_type = ''
-        this.organization.ogrn = ''
-        this.organization.inn = ''
-        this.organization.client_list_id = []
-
-        this.$refs.name.resetValidation()
-        this.$refs.ogrn.resetValidation()
-        this.$refs.inn.resetValidation()
-        this.$refs.org_type.resetValidation()
-      },
-      deleteRecord: function(orgObject) {
-        if (confirm(`Вы уверены, что хотите удалить организацию ${orgObject.name} ?`)) {
-          this.$api.staffs.organizations.delete(orgObject.id).then(_ => {
-            this.showDialog = false
-            this.$emit('reload-org-list-event');
-          })
-        }
-      },
-      pushToOrganizations() {
-        this.$router.push({ name: 'staff_organizations' })
-      }
+  },
+  created() {
+    if (this.id && this.id !== 'new') {
+      this.$api.staffs.organizations.show(this.id).then(({ data }) => {
+        this.organization = { ...data };
+        this.orgId = this.id;
+      });
     }
-  }
+    this.showDialog = true;
+    this.$api.staffs.equipments.free_equipments().then(({ data }) => {
+      this.equipments = data;
+    });
+  },
+  methods: {
+    checkForm() {
+      this.$refs.name.validate();
+      this.$refs.inn.validate();
+      this.$refs.ogrn.validate();
+      this.$refs.org_type.validate();
+
+      if (this.$refs.name.hasError
+          || this.$refs.inn.hasError
+          || this.$refs.ogrn.hasError
+          || this.$refs.org_type.hasError) {
+        this.formHasError = true;
+      } else {
+        this.onSubmit();
+      }
+    },
+    onSubmit() {
+      const params = { organization: this.organization };
+      let scope = this.$api.staffs.organizations;
+      scope = this.orgId ? scope.update(this.orgId, params) : scope.create(params);
+
+      scope
+        .then(({ data }) => {
+          if (data.success) {
+            this.onReset();
+            this.showDialog = false;
+            this.$emit('reload-org-list-event');
+          }
+        });
+    },
+    onReset() {
+      this.organization.name = '';
+      this.organization.org_type = '';
+      this.organization.ogrn = '';
+      this.organization.inn = '';
+      this.organization.client_list_id = [];
+
+      this.$refs.name.resetValidation();
+      this.$refs.ogrn.resetValidation();
+      this.$refs.inn.resetValidation();
+      this.$refs.org_type.resetValidation();
+    },
+    deleteRecord(orgObject) {
+      // eslint-disable-next-line no-restricted-globals
+      if (confirm(`Вы уверены, что хотите удалить организацию ${orgObject.name} ?`)) {
+        this.$api.staffs.organizations.delete(orgObject.id).then(() => {
+          this.showDialog = false;
+          this.$emit('reload-org-list-event');
+        });
+      }
+    },
+    pushToOrganizations() {
+      this.$router.push({ name: 'staff_organizations' });
+    },
+  },
+};
 </script>
